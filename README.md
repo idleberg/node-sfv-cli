@@ -7,6 +7,8 @@
 
 CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification))
 
+![Screenshot](https://raw.github.com/idleberg/node-sfv-cli/master/screenshot.png)
+
 ## Installation
 
 `yarn global add sfv-cli || npm install --global sfv-cli`
