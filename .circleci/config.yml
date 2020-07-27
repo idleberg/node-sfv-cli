@@ -1,22 +1,17 @@
-version: 2
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
 jobs:
-  build:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/node:latest
+  build-and-test:
+    executor:
+      name: node/default
     steps:
       - checkout
-      - restore_cache:
-          name: Restore npm Package Data Cache
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install Node dependencies
-          command: npm install
-      - save_cache:
-          name: Cache npm Package Data
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Run Tests
-          command: npm run test
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
