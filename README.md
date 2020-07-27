@@ -5,7 +5,7 @@
 [![CircleCI](https://flat.badgen.net/circleci/github/idleberg/node-sfv-cli)](https://circleci.com/gh/idleberg/node-sfv-cli)
 [![David](https://flat.badgen.net/david/dep/idleberg/node-sfv-cli)](https://david-dm.org/idleberg/node-sfv-cli)
 
-CLI tool to verify and create SFV files
+CLI tool to verify and create SFV files ([Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification))
 
 ## Installation
 

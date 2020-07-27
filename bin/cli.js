@@ -72,7 +72,7 @@ var scripts = {
 	dev: "npm run start",
 	lint: "eslint ./src",
 	start: "rollup --watch --config",
-	test: "ava ./test/default.js --verbose"
+	test: "npm run lint"
 };
 var main = "index.js";
 var bin = {
@@ -85,6 +85,10 @@ var repository = {
 	url: "https://github.com/idleberg/node-sfv-cli.git"
 };
 var keywords = [
+	"simple file verification",
+	"sfv",
+	"crc",
+	"crc32"
 ];
 var dependencies = {
 	"buffer-crc32": "^0.2.13",
