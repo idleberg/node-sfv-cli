@@ -76,7 +76,8 @@ var scripts = {
 };
 var main = "index.js";
 var bin = {
-	sfv: "./index.js"
+	sfv: "./index.js",
+	"node-sfv": "./index.js"
 };
 var homepage = "https://www.npmjs.com/package/sfv-cli";
 var repository = {
