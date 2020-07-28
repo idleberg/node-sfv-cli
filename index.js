@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const meta = require('package.json');
+const meta = require('./package.json');
 const updateNotifier = require('update-notifier');
-const resolve = require('path').resolve;
+const { resolve } = require('path');
 
 /**
  * The TypeScript compiler does not support she-bangs,
