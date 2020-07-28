@@ -3,7 +3,7 @@ import meta from '../package.json';
 import {
   checksumFromBuffer,
   compareSFV,
-  createSFV,
+  createChecksum,
   printTitle,
   setComment,
   writeSFV
@@ -28,6 +28,10 @@ program
 
 (async () => {
   const completedIn = '\n✨ Completed in';
+  const lineBreak = program.winsfv
+    ? '\r\n'
+    : '\n';
+
   if (!program.print) console.time(completedIn)
 
   const stdIn = await getStdin.buffer();
@@ -46,20 +50,20 @@ program
       try {
         await compareSFV(files, program.failFast);
       } catch (e) {
-        console.error('\n🔥 Aborting due to mismatch');
+        console.error(`${lineBreak}🔥 Aborting due to mismatch`);
         process.exit();
       }
 
       return console.timeEnd(completedIn);
     } else {
-      let sfvFile = await createSFV(files, program.print);
+      let sfvFile = await createChecksum(files, program.print);
 
       sfvFile.unshift(setComment(program.winsfv));
       sfvFile = sfvFile.filter(line => line);
 
-      const outputString = program.sort
-        ? sfvFile.sort().join('\n')
-        : sfvFile.join('\n');
+      const outputString = program.sortx
+        ? sfvFile.sort().join(lineBreak)
+        : sfvFile.join(lineBreak);
 
       if (!program.print) {
         if (program.output) {
