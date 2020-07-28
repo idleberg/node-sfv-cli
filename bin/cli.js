@@ -365,14 +365,28 @@ function compareSFV(files, failFast) {
                                     return [4 /*yield*/, Promise.all(sfvFile.map(function (_a) {
                                             var file = _a.file, crc32 = _a.crc32;
                                             return __awaiter(_this, void 0, void 0, function () {
-                                                var spinner, actualCRC;
+                                                var spinner, actualCRC, e_1;
                                                 return __generator(this, function (_b) {
                                                     switch (_b.label) {
                                                         case 0:
                                                             spinner = ora(file).start();
-                                                            return [4 /*yield*/, checksumFromFile(file)];
+                                                            _b.label = 1;
                                                         case 1:
+                                                            _b.trys.push([1, 3, , 4]);
+                                                            return [4 /*yield*/, checksumFromFile(file)];
+                                                        case 2:
                                                             actualCRC = _b.sent();
+                                                            return [3 /*break*/, 4];
+                                                        case 3:
+                                                            e_1 = _b.sent();
+                                                            spinner.fail(file + " " + chalk.red(crc32) + " " + chalk.dim(e_1));
+                                                            if (failFast) {
+                                                                throw 'Failing fast';
+                                                            }
+                                                            else {
+                                                                return [2 /*return*/];
+                                                            }
+                                                        case 4:
                                                             if (crc32 === actualCRC) {
                                                                 spinner.succeed(file + " " + chalk.blue(crc32));
                                                             }
@@ -413,7 +427,7 @@ function getSFVLine(files, printOutput, failFast) {
                         console.log("Calculating " + checksum + ":");
                     }
                     return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
-                            var spinner, checksum, e_1;
+                            var spinner, checksum, e_2;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
@@ -430,14 +444,14 @@ function getSFVLine(files, printOutput, failFast) {
                                             spinner.succeed(file + " " + chalk.blue(checksum));
                                         return [3 /*break*/, 4];
                                     case 3:
-                                        e_1 = _a.sent();
+                                        e_2 = _a.sent();
                                         if (failFast) {
-                                            spinner.fail(file + " " + chalk.dim(e_1));
+                                            spinner.fail(file + " " + chalk.dim(e_2));
                                             console.error("\n\uD83D\uDD25 Failing fast to error");
                                             process.exit();
                                         }
                                         if (!printOutput)
-                                            spinner.fail(file + " " + chalk.dim(e_1));
+                                            spinner.fail(file + " " + chalk.dim(e_2));
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/, file + " " + checksum];
                                 }
@@ -513,7 +527,7 @@ function stripComments(lines) {
 }
 function writeSFV(fileName, fileContents) {
     return __awaiter(this, void 0, void 0, function () {
-        var outputFile, spinner, e_2;
+        var outputFile, spinner, e_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -531,8 +545,8 @@ function writeSFV(fileName, fileContents) {
                     spinner.succeed(outputFile);
                     return [3 /*break*/, 4];
                 case 3:
-                    e_2 = _a.sent();
-                    spinner.fail(outputFile + " " + chalk.dim(e_2));
+                    e_3 = _a.sent();
+                    spinner.fail(outputFile + " " + chalk.dim(e_3));
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }

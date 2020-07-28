@@ -47,7 +47,19 @@ async function compareSFV(files: string[], failFast = false): Promise<void> {
 
     await Promise.all(sfvFile.map(async ({file, crc32}) => {
       const spinner = ora(file).start();
-      const actualCRC = await checksumFromFile(file);
+      let actualCRC;
+
+      try {
+         actualCRC = await checksumFromFile(file);
+      } catch (e) {
+        spinner.fail(`${file} ${chalk.red(crc32)} ${chalk.dim(e)}`);
+
+        if (failFast) {
+          throw 'Failing fast'
+        } else {
+          return;
+        }
+      }
 
       if (crc32 === actualCRC) {
         spinner.succeed(`${file} ${chalk.blue(crc32)}`);
