@@ -23,7 +23,6 @@ function bufferToString(inputBuffer: Buffer): string {
   return outputString.join('');
 }
 
-// async function checksumFromStream(filePath: string): Promise<string> {
 async function checksumFromStream(stream: NodeJS.ReadableStream): Promise<string> {
   return new Promise((resolve, reject) => {
     stream
