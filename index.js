@@ -10,4 +10,6 @@ const updateNotifier = require('update-notifier');
  */
 
 require(resolve(__dirname, 'bin/cli.js'));
-updateNotifier({meta}).notify();
+updateNotifier({
+  meta
+}).notify();
