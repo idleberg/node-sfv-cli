@@ -32,13 +32,13 @@ sfv vlc.sfv
 Running `sfv --help` list available flags
 
 ```
--V, --version        output the version number
--f, --fail-fast      aborts verifying after first mismatch (default: false)
--o, --output <file>  specifies output file
--p, --print          prints SFV file to stdout (default: false)
--s, --sort           sorts output (default: false)
--w, --winsfv         writes WinSFV compatible comment (default: false)
--h, --help           display help for command
+  -V, --version        output the version number
+  -f, --fail-fast      aborts verifying after first mismatch
+  -o, --output <file>  specifies output file
+  -p, --print          prints SFV file to stdout
+  -s, --sort           sorts output
+  -w, --winsfv         enables WinSFV compatibility
+  -h, --help           display help for command
 ```
 
 ## License
