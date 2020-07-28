@@ -25,6 +25,8 @@ sfv vlc.exe -o vlc.sfv
 sfv vlc.sfv
 ```
 
+**Note:** You can also use `node-sfv` to avoid naming conflicts
+
 ### Options
 
 Running `sfv --help` list available flags
