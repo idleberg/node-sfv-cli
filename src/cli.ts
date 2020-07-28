@@ -1,17 +1,13 @@
 import meta from '../package.json';
 
 import {
-  checksumFromBuffer,
   compareSFV,
-  createChecksum,
+  getSFVLine,
   printTitle,
   setComment,
   writeSFV
 } from './util.js';
 
-import chalk from 'chalk';
-import getStdin from 'get-stdin';
-import ora from 'ora';
 import program from 'commander';
 
 program
@@ -27,7 +23,6 @@ program
   .parse(process.argv);
 
 (async () => {
-  let stdIn;
   const completedIn = '\n✨ Completed in';
   const lineBreak = program.winsfv
     ? '\r\n'
@@ -35,19 +30,9 @@ program
 
   if (!program.print) console.time(completedIn)
 
-  try {
-     stdIn = await getStdin.buffer();
-  } catch(e) {
-    console.error(`\n🔥 ${e}`);
-    process.exit();
-  }
   const files = program.args;
 
-  if (!files.length && !stdIn.length) {
-    return program.help();
-  }
-
-  if (files.length > 0) {
+  if (files.length) {
     if (!program.print) printTitle();
 
     const sfvFiles = files.filter(file => file.endsWith('.sfv'));
@@ -62,7 +47,7 @@ program
 
       return console.timeEnd(completedIn);
     } else {
-      let sfvFile = await createChecksum(files, program.print);
+      let sfvFile = await getSFVLine(files, program.print);
 
       sfvFile.unshift(setComment(program.winsfv));
       sfvFile = sfvFile.filter(line => line);
@@ -81,19 +66,7 @@ program
         console.log(outputString);
       }
     }
-
-  } else if (stdIn.length > 0) {
-    printTitle();
-
-    const spinner = ora('<stdin>').start();
-
-    try {
-      const checksum = await checksumFromBuffer(stdIn);
-      spinner.succeed(`<stdin> ${chalk.blue(checksum)}`);
-    } catch (e) {
-      spinner.fail(`<stdin> ${chalk.dim(e)}`);
-    }
-
-    return console.timeEnd(completedIn);
+  } else {
+    program.help();
   }
 })();

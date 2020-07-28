@@ -1,7 +1,6 @@
 import meta from '../package.json';
 
 import { createReadStream, promises as fs } from 'fs';
-import crc32 from 'buffer-crc32';
 import cyclic32 from 'cyclic-32';
 import ora from 'ora';
 import terminalLink from 'terminal-link';
@@ -24,29 +23,18 @@ function bufferToString(inputBuffer: Buffer): string {
   return outputString.join('');
 }
 
-async function checksumFromStream(filePath: string): Promise<string> {
+// async function checksumFromStream(filePath: string): Promise<string> {
+async function checksumFromStream(stream: NodeJS.ReadableStream): Promise<string> {
   return new Promise((resolve, reject) => {
-    createReadStream(filePath)
+    stream
       .pipe( cyclic32.createHash() )
       .on('error', (err) => reject(err))
       .on('data', buffer => resolve(buffer.toString('hex').toUpperCase()));
   });
 }
 
-async function checksumFromBuffer(inputStream: Buffer): Promise<string> {
-  const checksum = crc32(inputStream);
-
-  if (!isValidChecksum(checksum)) {
-    throw Error('Not a valid checksum');
-  }
-
-  return bufferToString(checksum);
-}
-
 async function checksumFromFile(inputFile: string): Promise<string> {
-  const fileBuffer = await fs.readFile(inputFile);
-
-  return checksumFromBuffer(fileBuffer);
+  return await checksumFromStream(createReadStream(inputFile));
 }
 
 async function compareSFV(files: string[], failFast = false): Promise<void> {
@@ -71,7 +59,7 @@ async function compareSFV(files: string[], failFast = false): Promise<void> {
   }));
 }
 
-async function createChecksum(files: string[], printOutput: boolean): Promise<string[]> {
+async function getSFVLine(files: string[], printOutput: boolean): Promise<string[]> {
   if (!printOutput) {
     const checksum = (files.length === 1)
       ? 'checksum'
@@ -89,7 +77,7 @@ async function createChecksum(files: string[], printOutput: boolean): Promise<st
     }
 
     try {
-      checksum = await checksumFromStream(file);
+      checksum = await checksumFromFile(file);
       if (!printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
       if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
@@ -110,10 +98,6 @@ function getDate(): DateObject {
     minutes: date.getMinutes().toString().padStart(2, '0'),
     seconds: date.getSeconds().toString().padStart(2, '0')
   }
-}
-
-function isValidChecksum(checksum: Buffer): boolean {
-  return Buffer.isBuffer(checksum) && checksum.length === 4;
 }
 
 function parseSFV(input: string | string[]): SFVObject[] {
@@ -191,12 +175,10 @@ async function writeSFV(fileName: string, fileContents: string): Promise<void> {
 export {
   bufferToString,
   compareSFV,
-  checksumFromBuffer,
   checksumFromFile,
   checksumFromStream,
-  createChecksum,
+  getSFVLine,
   getDate,
-  isValidChecksum,
   parseSFV,
   printTitle,
   readSFV,
