@@ -63,7 +63,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.2.0";
+var version = "0.3.0";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -339,8 +339,11 @@ function checksumFromFile(inputFile) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, checksumFromStream(fs.createReadStream(inputFile))];
-                case 1: return [2 /*return*/, _a.sent()];
+                case 0: return [4 /*yield*/, fs.promises.access(inputFile)];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, checksumFromStream(fs.createReadStream(inputFile))];
+                case 2: return [2 /*return*/, _a.sent()];
             }
         });
     });
@@ -397,7 +400,7 @@ function compareSFV(files, failFast) {
         });
     });
 }
-function getSFVLine(files, printOutput) {
+function getSFVLine(files, printOutput, failFast) {
     return __awaiter(this, void 0, void 0, function () {
         var checksum;
         var _this = this;
@@ -429,6 +432,11 @@ function getSFVLine(files, printOutput) {
                                         return [3 /*break*/, 4];
                                     case 3:
                                         e_1 = _a.sent();
+                                        if (failFast) {
+                                            spinner.fail(file + " " + chalk.dim(e_1));
+                                            console.error("\n\uD83D\uDD25 Failing fast to error");
+                                            process.exit();
+                                        }
                                         if (!printOutput)
                                             spinner.fail(file + " " + chalk.dim(e_1));
                                         return [3 /*break*/, 4];
@@ -570,11 +578,11 @@ program
                 return [3 /*break*/, 4];
             case 3:
                 e_1 = _a.sent();
-                console.error("\n\uD83D\uDD25 Aborting due to mismatch");
+                console.error("\n\uD83D\uDD25 Failing fast due to mismatch");
                 process.exit();
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/, console.timeEnd(completedIn)];
-            case 5: return [4 /*yield*/, getSFVLine(files, program.print)];
+            case 5: return [4 /*yield*/, getSFVLine(files, program.print, program.failFast)];
             case 6:
                 sfvFile = _a.sent();
                 sfvFile.unshift(setComment(program.winsfv));

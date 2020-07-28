@@ -41,13 +41,13 @@ program
       try {
         await compareSFV(files, program.failFast);
       } catch (e) {
-        console.error(`\n🔥 Aborting due to mismatch`);
+        console.error(`\n🔥 Failing fast due to mismatch`);
         process.exit();
       }
 
       return console.timeEnd(completedIn);
     } else {
-      let sfvFile = await getSFVLine(files, program.print);
+      let sfvFile = await getSFVLine(files, program.print, program.failFast);
 
       sfvFile.unshift(setComment(program.winsfv));
       sfvFile = sfvFile.filter(line => line);

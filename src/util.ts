@@ -34,6 +34,8 @@ async function checksumFromStream(stream: NodeJS.ReadableStream): Promise<string
 }
 
 async function checksumFromFile(inputFile: string): Promise<string> {
+  await fs.access(inputFile);
+
   return await checksumFromStream(createReadStream(inputFile));
 }
 
@@ -59,7 +61,7 @@ async function compareSFV(files: string[], failFast = false): Promise<void> {
   }));
 }
 
-async function getSFVLine(files: string[], printOutput: boolean): Promise<string[]> {
+async function getSFVLine(files: string[], printOutput: boolean, failFast: boolean): Promise<string[]> {
   if (!printOutput) {
     const checksum = (files.length === 1)
       ? 'checksum'
@@ -80,6 +82,12 @@ async function getSFVLine(files: string[], printOutput: boolean): Promise<string
       checksum = await checksumFromFile(file);
       if (!printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
+      if (failFast) {
+        spinner.fail(`${file} ${chalk.dim(e)}`)
+        console.error(`\n🔥 Failing fast to error`);
+
+        process.exit();
+      }
       if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
     }
 
