@@ -65,7 +65,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.1.0";
+var version = "0.2.0";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -688,7 +688,7 @@ program
     .option('-w, --winsfv', 'writes WinSFV compatible comment', false)
     .parse(process.argv);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var completedIn, lineBreak, stdIn, files, sfvFiles, e_1, sfvFile, outputString, spinner, checksum;
+    var stdIn, completedIn, lineBreak, e_1, files, sfvFiles, e_2, sfvFile, outputString, spinner, checksum, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -698,62 +698,80 @@ program
                     : '\n';
                 if (!program.print)
                     console.time(completedIn);
-                return [4 /*yield*/, getStdin.buffer()];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, getStdin.buffer()];
+            case 2:
                 stdIn = _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                e_1 = _a.sent();
+                console.error("\n\uD83D\uDD25 " + e_1);
+                process.exit();
+                return [3 /*break*/, 4];
+            case 4:
                 files = program.args;
                 if (!files.length && !stdIn.length) {
                     return [2 /*return*/, program.help()];
                 }
-                if (!(files.length > 0)) return [3 /*break*/, 12];
+                if (!(files.length > 0)) return [3 /*break*/, 15];
                 if (!program.print)
                     printTitle();
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv'); });
-                if (!(files.length && files.length === sfvFiles.length)) return [3 /*break*/, 6];
-                _a.label = 2;
-            case 2:
-                _a.trys.push([2, 4, , 5]);
+                if (!(files.length && files.length === sfvFiles.length)) return [3 /*break*/, 9];
+                _a.label = 5;
+            case 5:
+                _a.trys.push([5, 7, , 8]);
                 return [4 /*yield*/, compareSFV(files, program.failFast)];
-            case 3:
+            case 6:
                 _a.sent();
-                return [3 /*break*/, 5];
-            case 4:
-                e_1 = _a.sent();
-                console.error(lineBreak + "\uD83D\uDD25 Aborting due to mismatch");
-                process.exit();
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/, console.timeEnd(completedIn)];
-            case 6: return [4 /*yield*/, createChecksum(files, program.print)];
+                return [3 /*break*/, 8];
             case 7:
+                e_2 = _a.sent();
+                console.error("\n\uD83D\uDD25 Aborting due to mismatch");
+                process.exit();
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/, console.timeEnd(completedIn)];
+            case 9: return [4 /*yield*/, createChecksum(files, program.print)];
+            case 10:
                 sfvFile = _a.sent();
                 sfvFile.unshift(setComment(program.winsfv));
                 sfvFile = sfvFile.filter(function (line) { return line; });
                 outputString = program.sortx
                     ? sfvFile.sort().join(lineBreak)
                     : sfvFile.join(lineBreak);
-                if (!!program.print) return [3 /*break*/, 10];
-                if (!program.output) return [3 /*break*/, 9];
+                if (!!program.print) return [3 /*break*/, 13];
+                if (!program.output) return [3 /*break*/, 12];
                 return [4 /*yield*/, writeSFV(program.output, outputString)];
-            case 8:
+            case 11:
                 _a.sent();
-                _a.label = 9;
-            case 9:
-                console.timeEnd(completedIn);
-                return [3 /*break*/, 11];
-            case 10:
-                console.log(outputString);
-                _a.label = 11;
-            case 11: return [3 /*break*/, 14];
+                _a.label = 12;
             case 12:
-                if (!(stdIn.length > 0)) return [3 /*break*/, 14];
+                console.timeEnd(completedIn);
+                return [3 /*break*/, 14];
+            case 13:
+                console.log(outputString);
+                _a.label = 14;
+            case 14: return [3 /*break*/, 20];
+            case 15:
+                if (!(stdIn.length > 0)) return [3 /*break*/, 20];
                 printTitle();
                 spinner = ora('<stdin>').start();
+                _a.label = 16;
+            case 16:
+                _a.trys.push([16, 18, , 19]);
                 return [4 /*yield*/, checksumFromBuffer(stdIn)];
-            case 13:
+            case 17:
                 checksum = _a.sent();
                 spinner.succeed("<stdin> " + chalk.blue(checksum));
-                return [2 /*return*/, console.timeEnd(completedIn)];
-            case 14: return [2 /*return*/];
+                return [3 /*break*/, 19];
+            case 18:
+                e_3 = _a.sent();
+                spinner.fail("<stdin> " + chalk.dim(e_3));
+                return [3 /*break*/, 19];
+            case 19: return [2 /*return*/, console.timeEnd(completedIn)];
+            case 20: return [2 /*return*/];
         }
     });
 }); })();

@@ -27,6 +27,7 @@ program
   .parse(process.argv);
 
 (async () => {
+  let stdIn;
   const completedIn = '\n✨ Completed in';
   const lineBreak = program.winsfv
     ? '\r\n'
@@ -34,7 +35,12 @@ program
 
   if (!program.print) console.time(completedIn)
 
-  const stdIn = await getStdin.buffer();
+  try {
+     stdIn = await getStdin.buffer();
+  } catch(e) {
+    console.error(`\n🔥 ${e}`);
+    process.exit();
+  }
   const files = program.args;
 
   if (!files.length && !stdIn.length) {
@@ -50,7 +56,7 @@ program
       try {
         await compareSFV(files, program.failFast);
       } catch (e) {
-        console.error(`${lineBreak}🔥 Aborting due to mismatch`);
+        console.error(`\n🔥 Aborting due to mismatch`);
         process.exit();
       }
 
@@ -80,9 +86,13 @@ program
     printTitle();
 
     const spinner = ora('<stdin>').start();
-    const checksum = await checksumFromBuffer(stdIn);
 
-    spinner.succeed(`<stdin> ${chalk.blue(checksum)}`);
+    try {
+      const checksum = await checksumFromBuffer(stdIn);
+      spinner.succeed(`<stdin> ${chalk.blue(checksum)}`);
+    } catch (e) {
+      spinner.fail(`<stdin> ${chalk.dim(e)}`);
+    }
 
     return console.timeEnd(completedIn);
   }
