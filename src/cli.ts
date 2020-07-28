@@ -19,7 +19,7 @@ program
   .option('-o, --output <file>', 'specifies output file')
   .option('-p, --print', 'prints SFV file to stdout', false)
   .option('-s, --sort', 'sorts output', false)
-  .option('-w, --winsfv', 'writes WinSFV compatible comment', false)
+  .option('-w, --winsfv', 'enables WinSFV compatibility', false)
   .parse(process.argv);
 
 (async () => {

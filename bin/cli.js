@@ -63,7 +63,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.3.0";
+var version = "0.3.1";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -322,7 +322,6 @@ crc32.createHash = function createHash() {
   return new crc32.Hash()
 };
 
-// async function checksumFromStream(filePath: string): Promise<string> {
 function checksumFromStream(stream) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -550,7 +549,7 @@ program
     .option('-o, --output <file>', 'specifies output file')
     .option('-p, --print', 'prints SFV file to stdout', false)
     .option('-s, --sort', 'sorts output', false)
-    .option('-w, --winsfv', 'writes WinSFV compatible comment', false)
+    .option('-w, --winsfv', 'enables WinSFV compatibility', false)
     .parse(process.argv);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var completedIn, lineBreak, files, sfvFiles, e_1, sfvFile, outputString;
