@@ -1,7 +1,8 @@
 import meta from '../package.json';
 
-import { promises as fs } from 'fs';
+import { createReadStream, promises as fs } from 'fs';
 import crc32 from 'buffer-crc32';
+import cyclic32 from 'cyclic-32';
 import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
@@ -21,6 +22,15 @@ function bufferToString(inputBuffer: Buffer): string {
   );
 
   return outputString.join('');
+}
+
+async function checksumFromStream(filePath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    createReadStream(filePath)
+      .pipe( cyclic32.createHash() )
+      .on('error', (err) => reject(err))
+      .on('data', buffer => resolve(buffer.toString('hex').toUpperCase()));
+  });
 }
 
 async function checksumFromBuffer(inputStream: Buffer): Promise<string> {
@@ -79,7 +89,7 @@ async function createSFV(files: string[], printOutput: boolean): Promise<string[
     }
 
     try {
-      checksum = await checksumFromFile(file);
+      checksum = await checksumFromStream(file);
       if (!printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
       if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
@@ -183,6 +193,7 @@ export {
   compareSFV,
   checksumFromBuffer,
   checksumFromFile,
+  checksumFromStream,
   createSFV,
   getDate,
   isValidChecksum,

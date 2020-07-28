@@ -30,6 +30,7 @@
     "buffer-crc32": "^0.2.13",
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
+    "cyclic-32": "^1.1.0",
     "get-stdin": "^8.0.0",
     "ora": "^4.0.5",
     "terminal-link": "^2.1.1"
