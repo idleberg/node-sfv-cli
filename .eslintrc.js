@@ -11,4 +11,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
   ],
+  ignorePatterns: [
+    'index.js'
+  ],
 };
