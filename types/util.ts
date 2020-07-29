@@ -1,3 +1,9 @@
+interface CalculateOptions {
+  algorithm: string;
+  failFast: boolean;
+  print: boolean;
+}
+
 interface DateObject {
   year: string;
   month: string;
@@ -13,6 +19,7 @@ interface SFVObject {
 }
 
 export {
+  CalculateOptions,
   DateObject,
   SFVObject
 }

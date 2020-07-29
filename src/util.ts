@@ -7,7 +7,7 @@ import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
 
-import { DateObject, SFVObject } from '../types/util';
+import { DateObject, SFVObject, CalculateOptions } from '../types/util';
 
 function bufferToString(inputBuffer: Buffer): string {
   const outputString = [];
@@ -102,7 +102,7 @@ function detectHash(algorithm: string): string {
   }
 }
 
-async function calculateChecksum(files: string[], options): Promise<string[]> {
+async function calculateChecksum(files: string[], options: CalculateOptions): Promise<string[]> {
   if (!options.printOutput) {
     const checksum = (files.length === 1)
       ? 'checksum'
