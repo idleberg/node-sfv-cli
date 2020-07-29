@@ -232,6 +232,7 @@ export {
   compareSFV,
   checksumFromFile,
   checksumFromStream,
+  detectHash,
   getDate,
   isSupportedAlgorithm,
   parseSFV,
