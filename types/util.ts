@@ -8,7 +8,7 @@ interface DateObject {
 }
 
 interface SFVObject {
-  crc32: string;
+  checksum: string;
   file: string;
 }
 

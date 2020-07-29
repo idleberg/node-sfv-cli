@@ -2,6 +2,7 @@ import meta from '../package.json';
 
 import { createReadStream, promises as fs } from 'fs';
 import cyclic32 from 'cyclic-32';
+import hasha from 'hasha';
 import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
@@ -23,19 +24,23 @@ function bufferToString(inputBuffer: Buffer): string {
   return outputString.join('');
 }
 
-async function checksumFromStream(stream: NodeJS.ReadableStream): Promise<string> {
+async function checksumFromStream(stream: NodeJS.ReadableStream, algorithm: string): Promise<string> {
+  const hashingFunction = algorithm === 'crc32'
+    ? cyclic32.createHash()
+    : hasha.stream({algorithm});
+
   return new Promise((resolve, reject) => {
     stream
-      .pipe( cyclic32.createHash() )
+      .pipe(hashingFunction)
       .on('error', (err) => reject(err))
       .on('data', buffer => resolve(buffer.toString('hex').toUpperCase()));
   });
 }
 
-async function checksumFromFile(inputFile: string): Promise<string> {
+async function checksumFromFile(inputFile: string, algorithm: string): Promise<string> {
   await fs.access(inputFile);
 
-  return await checksumFromStream(createReadStream(inputFile));
+  return await checksumFromStream(createReadStream(inputFile), algorithm);
 }
 
 async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
@@ -44,14 +49,18 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
   await Promise.all( sfvFiles.map(async sfvFile => {
     const sfvContents = await readSFV(sfvFile);
 
-    await Promise.all(sfvContents.map(async ({file, crc32}) => {
+    await Promise.all(sfvContents.map(async ({file, checksum}) => {
       const spinner = ora(file).start();
-      let actualCRC;
+      let actualChecksum;
+
+      const algorithm = sfvFile.endsWith('.sfvx')
+        ? detectHash(checksum)
+        : 'crc32';
 
       try {
-         actualCRC = await checksumFromFile(file);
+         actualChecksum = await checksumFromFile(file, algorithm);
       } catch (e) {
-        spinner.fail(`${file} ${chalk.red(crc32)} ${chalk.dim(e)}`);
+        spinner.fail(`${file} ${chalk.red(checksum)} ${chalk.dim(e)}`);
 
         if (failFast) {
           throw 'Failing fast'
@@ -60,10 +69,10 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
         }
       }
 
-      if (crc32 === actualCRC) {
-        spinner.succeed(`${file} ${chalk.blue(crc32)}`);
+      if (checksum === actualChecksum) {
+        spinner.succeed(`${file} ${chalk.blue(checksum)}`);
       } else {
-        spinner.fail(`${file} ${chalk.red(crc32)} (actual: ${chalk.blue(actualCRC)})`);
+        spinner.fail(`${file} ${chalk.red(checksum)} (actual: ${chalk.blue(actualChecksum)})`);
 
         if (failFast) throw 'Failing fast';
       }
@@ -93,8 +102,8 @@ function detectHash(algorithm: string): string {
   }
 }
 
-async function calculateChecksum(files: string[], printOutput: boolean, failFast: boolean): Promise<string[]> {
-  if (!printOutput) {
+async function calculateChecksum(files: string[], options): Promise<string[]> {
+  if (!options.printOutput) {
     const checksum = (files.length === 1)
       ? 'checksum'
       : 'checksums';
@@ -106,19 +115,19 @@ async function calculateChecksum(files: string[], printOutput: boolean, failFast
     let spinner;
     let checksum;
 
-    if (!printOutput) {
+    if (!options.printOutput) {
       spinner = ora(`${file}`).start();
     }
 
     try {
-      checksum = await checksumFromFile(file);
-      if (!printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
+      checksum = await checksumFromFile(file, options.algorithm);
+      if (!options.printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
-      if (failFast) {
+      if (options.failFast) {
         spinner.fail(`${file} ${chalk.dim(e)}`)
         softThrow('Failing fast to error', true);
       }
-      if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
+      if (!options.printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
     }
 
     return `${file} ${checksum}`;
@@ -142,21 +151,25 @@ function isSupportedAlgorithm(algorithm: string): boolean {
   return ['md5', 'sha1', 'sha256', 'sha512'].includes(algorithm.replace('-', '').toLowerCase());
 }
 
-function parseSFV(input: string | string[]): SFVObject[] {
+function parseSFV(input: string | string[], isSFV = true): SFVObject[] {
   const lines = Array.isArray(input)
     ? stripComments(input)
     : stripComments(input.split('\n'));
 
+  const regex = isSFV
+   ? /^(.*)\s+(\w{8})$/g
+   : /^(.*)\s+(\w{32,128})$/g
+
   return lines.map(line => {
-    const [file, crc32] = line
+    const [file, checksum] = line
       .trim()
-      .split(/^(.*)\s+(\w{8})$/g)
+      .split(regex)
       .filter(item => item);
 
-    return file && crc32
+    return file && checksum
       ? {
         file,
-        crc32
+        checksum
       }
       : null;
   }).filter(item => item);
@@ -175,8 +188,11 @@ function printTitle(): void {
 
 async function readSFV(filePath: string): Promise<SFVObject[]> {
   const fileContents = (await fs.readFile(filePath)).toString();
+  const isSFV = filePath.endsWith('.sfvx')
+    ? false
+    : true;
 
-  return parseSFV(fileContents.toString());
+  return parseSFV(fileContents.toString(), isSFV);
 }
 
 function setComment(useWinSFV: boolean): string {
@@ -210,10 +226,14 @@ function stripComments(lines: string[]): string[] {
   )
 }
 
-async function writeSFV(fileName: string, fileContents: string): Promise<void> {
-  const outputFile = fileName.endsWith('.sfv')
+async function writeSFV(fileName: string, fileContents: string, algorithm: string): Promise<void> {
+  const fileExtension = algorithm === 'crc32'
+    ? '.sfv'
+    : '.sfvx';
+
+  const outputFile = fileName.endsWith(fileExtension)
     ? fileName
-    : `${fileName}.sfv`;
+    : `${fileName}${fileExtension}`;
 
   console.log('\nWriting output:');
   const spinner = ora(outputFile).start();

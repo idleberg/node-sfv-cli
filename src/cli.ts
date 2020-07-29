@@ -16,6 +16,7 @@ program
   .description(meta.description)
   .arguments('[options] <file ...>')
   .usage('[options] <file ...>')
+  .option('-a, --algorithm <algorithm>', 'specifies hashing algorithm', false)
   .option('-f, --fail-fast', 'aborts verifying after first mismatch', false)
   .option('-o, --output <file>', 'specifies output file')
   .option('-p, --print', 'prints SFV file to stdout', false)
@@ -35,7 +36,7 @@ const files = program.args;
   if (files.length) {
     if (!program.print) printTitle();
 
-    const sfvFiles = files.filter(file => file.endsWith('.sfv'));
+    const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
 
     if (sfvFiles.length) {
       return await validationMode();
@@ -48,7 +49,17 @@ const files = program.args;
 })();
 
 async function creationMode() {
-  let sfvFile = await calculateChecksum(files, program.print, program.failFast);
+  const algorithm = program.algorithm
+    ? program.algorithm
+    : 'crc32';
+
+  const options = {
+    algorithm: algorithm,
+    failFast: program.failFast,
+    print: program.print
+  };
+
+  let sfvFile = await calculateChecksum(files, options);
 
   sfvFile.unshift(setComment(program.winsfv));
   sfvFile = sfvFile.filter(line => line);
@@ -59,7 +70,7 @@ async function creationMode() {
 
   if (!program.print) {
     if (program.output) {
-      await writeSFV(program.output, outputString);
+      await writeSFV(program.output, outputString, algorithm);
     }
 
     console.timeEnd(completedIn);
