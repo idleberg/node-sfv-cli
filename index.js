@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const meta = require('./package.json');
+const pkg = require('./package.json');
 const updateNotifier = require('update-notifier');
 const { resolve } = require('path');
 
@@ -11,5 +11,5 @@ const { resolve } = require('path');
 
 require(resolve(__dirname, 'bin/cli.js'));
 updateNotifier({
-  meta
+  pkg
 }).notify();
