@@ -116,7 +116,7 @@ async function calculateChecksum(files: string[], printOutput: boolean, failFast
     } catch (e) {
       if (failFast) {
         spinner.fail(`${file} ${chalk.dim(e)}`)
-        softThrowError('Failing fast to error', true);
+        softThrow('Failing fast to error', true);
       }
       if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
     }
@@ -190,16 +190,16 @@ function setComment(useWinSFV: boolean): string {
     : `; ${meta.name} v${meta.version} | ${meta.homepage}\n;`;
 }
 
-function softThrowError(message: string, newLine = false): void {
+function softThrow(message: string, newLine = false): void {
   process.on('exit', () => {
-    message = newLine
-      ? `\n🔥 ${message}`
-      : `🔥 ${message}`;
+    const prefix = newLine
+      ? '\n'
+      : '';
 
-    console.log(message);
+    console.log(`${prefix}🔥 ${message}`);
   });
 
-  process.exit();
+  process.exit(1);
 }
 
 function stripComments(lines: string[]): string[] {
@@ -240,6 +240,6 @@ export {
   readSFV,
   setComment,
   stripComments,
-  softThrowError,
+  softThrow,
   writeSFV
 };

@@ -5,7 +5,7 @@ import {
   calculateChecksum,
   printTitle,
   setComment,
-  softThrowError,
+  softThrow,
   writeSFV
 } from './util.js';
 
@@ -72,7 +72,7 @@ async function validationMode() {
   try {
     await compareSFV(files, program.failFast);
   } catch (e) {
-    softThrowError('Failing fast due to mismatch');
+    softThrow('Failing fast due to mismatch');
   }
 
   return console.timeEnd(completedIn);
