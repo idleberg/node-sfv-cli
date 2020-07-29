@@ -30,6 +30,7 @@
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
     "cyclic-32": "^1.1.0",
+    "hasha": "^5.2.0",
     "ora": "^4.0.5",
     "terminal-link": "^2.1.1",
     "update-notifier": "^4.1.0"

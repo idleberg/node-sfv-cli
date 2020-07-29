@@ -93,6 +93,7 @@ var dependencies = {
 	chalk: "^4.1.0",
 	commander: "^6.0.0",
 	"cyclic-32": "^1.1.0",
+	hasha: "^5.2.0",
 	ora: "^4.0.5",
 	"terminal-link": "^2.1.1",
 	"update-notifier": "^4.1.0"
@@ -348,65 +349,66 @@ function checksumFromFile(inputFile) {
         });
     });
 }
-function compareSFV(files, failFast) {
+function compareSFV(sfvFiles, failFast) {
     if (failFast === void 0) { failFast = false; }
     return __awaiter(this, void 0, void 0, function () {
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
-                        var sfvFile;
-                        var _this = this;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, readSFV(file)];
-                                case 1:
-                                    sfvFile = _a.sent();
-                                    console.log('Verifying files:');
-                                    return [4 /*yield*/, Promise.all(sfvFile.map(function (_a) {
-                                            var file = _a.file, crc32 = _a.crc32;
-                                            return __awaiter(_this, void 0, void 0, function () {
-                                                var spinner, actualCRC, e_1;
-                                                return __generator(this, function (_b) {
-                                                    switch (_b.label) {
-                                                        case 0:
-                                                            spinner = ora(file).start();
-                                                            _b.label = 1;
-                                                        case 1:
-                                                            _b.trys.push([1, 3, , 4]);
-                                                            return [4 /*yield*/, checksumFromFile(file)];
-                                                        case 2:
-                                                            actualCRC = _b.sent();
-                                                            return [3 /*break*/, 4];
-                                                        case 3:
-                                                            e_1 = _b.sent();
-                                                            spinner.fail(file + " " + chalk.red(crc32) + " " + chalk.dim(e_1));
-                                                            if (failFast) {
-                                                                throw 'Failing fast';
-                                                            }
-                                                            else {
-                                                                return [2 /*return*/];
-                                                            }
-                                                        case 4:
-                                                            if (crc32 === actualCRC) {
-                                                                spinner.succeed(file + " " + chalk.blue(crc32));
-                                                            }
-                                                            else {
-                                                                spinner.fail(file + " " + chalk.red(crc32) + " (actual: " + chalk.blue(actualCRC) + ")");
-                                                                if (failFast)
+                case 0:
+                    console.log('\nVerifying files:');
+                    return [4 /*yield*/, Promise.all(sfvFiles.map(function (sfvFile) { return __awaiter(_this, void 0, void 0, function () {
+                            var sfvContents;
+                            var _this = this;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, readSFV(sfvFile)];
+                                    case 1:
+                                        sfvContents = _a.sent();
+                                        return [4 /*yield*/, Promise.all(sfvContents.map(function (_a) {
+                                                var file = _a.file, crc32 = _a.crc32;
+                                                return __awaiter(_this, void 0, void 0, function () {
+                                                    var spinner, actualCRC, e_1;
+                                                    return __generator(this, function (_b) {
+                                                        switch (_b.label) {
+                                                            case 0:
+                                                                spinner = ora(file).start();
+                                                                _b.label = 1;
+                                                            case 1:
+                                                                _b.trys.push([1, 3, , 4]);
+                                                                return [4 /*yield*/, checksumFromFile(file)];
+                                                            case 2:
+                                                                actualCRC = _b.sent();
+                                                                return [3 /*break*/, 4];
+                                                            case 3:
+                                                                e_1 = _b.sent();
+                                                                spinner.fail(file + " " + chalk.red(crc32) + " " + chalk.dim(e_1));
+                                                                if (failFast) {
                                                                     throw 'Failing fast';
-                                                            }
-                                                            return [2 /*return*/];
-                                                    }
+                                                                }
+                                                                else {
+                                                                    return [2 /*return*/];
+                                                                }
+                                                            case 4:
+                                                                if (crc32 === actualCRC) {
+                                                                    spinner.succeed(file + " " + chalk.blue(crc32));
+                                                                }
+                                                                else {
+                                                                    spinner.fail(file + " " + chalk.red(crc32) + " (actual: " + chalk.blue(actualCRC) + ")");
+                                                                    if (failFast)
+                                                                        throw 'Failing fast';
+                                                                }
+                                                                return [2 /*return*/];
+                                                        }
+                                                    });
                                                 });
-                                            });
-                                        }))];
-                                case 2:
-                                    _a.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); }))];
+                                            }))];
+                                    case 2:
+                                        _a.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -414,7 +416,7 @@ function compareSFV(files, failFast) {
         });
     });
 }
-function getSFVLine(files, printOutput, failFast) {
+function calculateChecksum(files, printOutput, failFast) {
     return __awaiter(this, void 0, void 0, function () {
         var checksum;
         var _this = this;
@@ -425,7 +427,7 @@ function getSFVLine(files, printOutput, failFast) {
                         checksum = (files.length === 1)
                             ? 'checksum'
                             : 'checksums';
-                        console.log("Calculating " + checksum + ":");
+                        console.log("\nCalculating " + checksum + ":");
                     }
                     return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
                             var spinner, checksum, e_2;
@@ -497,7 +499,7 @@ function printTitle() {
             return title + " | " + meta.homepage;
         }
     });
-    console.log(linkedTitle + "\n");
+    console.log(linkedTitle);
 }
 function readSFV(filePath) {
     return __awaiter(this, void 0, void 0, function () {
@@ -591,7 +593,7 @@ var files = program.args;
                 if (!program.print)
                     printTitle();
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv'); });
-                if (!(files.length && files.length === sfvFiles.length)) return [3 /*break*/, 2];
+                if (!sfvFiles.length) return [3 /*break*/, 2];
                 return [4 /*yield*/, validationMode()];
             case 1: return [2 /*return*/, _a.sent()];
             case 2: return [4 /*yield*/, creationMode()];
@@ -609,12 +611,12 @@ function creationMode() {
         var sfvFile, outputString;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSFVLine(files, program.print, program.failFast)];
+                case 0: return [4 /*yield*/, calculateChecksum(files, program.print, program.failFast)];
                 case 1:
                     sfvFile = _a.sent();
                     sfvFile.unshift(setComment(program.winsfv));
                     sfvFile = sfvFile.filter(function (line) { return line; });
-                    outputString = program.sortx
+                    outputString = program.sort
                         ? sfvFile.sort().join(lineBreak)
                         : sfvFile.join(lineBreak);
                     if (!!program.print) return [3 /*break*/, 4];

@@ -2,7 +2,7 @@ import meta from '../package.json';
 
 import {
   compareSFV,
-  getSFVLine,
+  calculateChecksum,
   printTitle,
   setComment,
   softThrowError,
@@ -37,7 +37,7 @@ const files = program.args;
 
     const sfvFiles = files.filter(file => file.endsWith('.sfv'));
 
-    if (files.length && files.length === sfvFiles.length) {
+    if (sfvFiles.length) {
       return await validationMode();
     } else {
       return await creationMode();
@@ -48,12 +48,12 @@ const files = program.args;
 })();
 
 async function creationMode() {
-  let sfvFile = await getSFVLine(files, program.print, program.failFast);
+  let sfvFile = await calculateChecksum(files, program.print, program.failFast);
 
   sfvFile.unshift(setComment(program.winsfv));
   sfvFile = sfvFile.filter(line => line);
 
-  const outputString = program.sortx
+  const outputString = program.sort
     ? sfvFile.sort().join(lineBreak)
     : sfvFile.join(lineBreak);
 

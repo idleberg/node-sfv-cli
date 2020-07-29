@@ -38,14 +38,13 @@ async function checksumFromFile(inputFile: string): Promise<string> {
   return await checksumFromStream(createReadStream(inputFile));
 }
 
-async function compareSFV(files: string[], failFast = false): Promise<void> {
-  await Promise.all( files.map(async file => {
+async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
+  console.log('\nVerifying files:');
 
-    const sfvFile = await readSFV(file);
+  await Promise.all( sfvFiles.map(async sfvFile => {
+    const sfvContents = await readSFV(sfvFile);
 
-    console.log('Verifying files:');
-
-    await Promise.all(sfvFile.map(async ({file, crc32}) => {
+    await Promise.all(sfvContents.map(async ({file, crc32}) => {
       const spinner = ora(file).start();
       let actualCRC;
 
@@ -72,13 +71,35 @@ async function compareSFV(files: string[], failFast = false): Promise<void> {
   }));
 }
 
-async function getSFVLine(files: string[], printOutput: boolean, failFast: boolean): Promise<string[]> {
+function detectHash(algorithm: string): string {
+  switch (algorithm.length) {
+    case 8:
+      return 'crc32';
+
+    case 32:
+      return 'md5';
+
+    case 40:
+      return 'sha1';
+
+    case 64:
+      return 'sha256';
+
+    case 128:
+      return 'sha512';
+
+    default:
+      throw Error('Unsupported hashing algorithm');
+  }
+}
+
+async function calculateChecksum(files: string[], printOutput: boolean, failFast: boolean): Promise<string[]> {
   if (!printOutput) {
     const checksum = (files.length === 1)
       ? 'checksum'
       : 'checksums';
 
-    console.log(`Calculating ${checksum}:`);
+    console.log(`\nCalculating ${checksum}:`);
   }
 
   return await Promise.all(files.map( async file => {
@@ -117,6 +138,10 @@ function getDate(): DateObject {
   }
 }
 
+function isSupportedAlgorithm(algorithm: string): boolean {
+  return ['md5', 'sha1', 'sha256', 'sha512'].includes(algorithm.replace('-', '').toLowerCase());
+}
+
 function parseSFV(input: string | string[]): SFVObject[] {
   const lines = Array.isArray(input)
     ? stripComments(input)
@@ -145,7 +170,7 @@ function printTitle(): void {
       }
     });
 
-  console.log(`${linkedTitle}\n`);
+  console.log(linkedTitle);
 }
 
 async function readSFV(filePath: string): Promise<SFVObject[]> {
@@ -203,11 +228,12 @@ async function writeSFV(fileName: string, fileContents: string): Promise<void> {
 
 export {
   bufferToString,
+  calculateChecksum,
   compareSFV,
   checksumFromFile,
   checksumFromStream,
-  getSFVLine,
   getDate,
+  isSupportedAlgorithm,
   parseSFV,
   printTitle,
   readSFV,
