@@ -5,11 +5,9 @@
 [![CircleCI](https://flat.badgen.net/circleci/github/idleberg/node-sfv-cli)](https://circleci.com/gh/idleberg/node-sfv-cli)
 [![David](https://flat.badgen.net/david/dep/idleberg/node-sfv-cli)](https://david-dm.org/idleberg/node-sfv-cli)
 
-CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification))
+CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification)). This package also introduces an extended SFV-like file format, which supports modern hashing algorithms.
 
 ![Screenshot](https://raw.github.com/idleberg/node-sfv-cli/master/screenshot.png)
-
-**Note:** A custom, SFV-like format (`.sfvx`) using modern hashing algorithms is also supported. See the `--algorithm` option for details!
 
 ## Installation
 
