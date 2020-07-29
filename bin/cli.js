@@ -3,6 +3,7 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var fs = require('fs');
+var path = require('path');
 var stream = _interopDefault(require('stream'));
 var hasha = _interopDefault(require('hasha'));
 var ora = _interopDefault(require('ora'));
@@ -64,7 +65,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.3.2";
+var version = "0.4.0";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -87,8 +88,13 @@ var repository = {
 var keywords = [
 	"simple file verification",
 	"sfv",
+	"sfvx",
 	"crc",
-	"crc32"
+	"crc32",
+	"md5",
+	"sha1",
+	"sha256",
+	"sha512"
 ];
 var dependencies = {
 	chalk: "^4.1.0",
@@ -516,7 +522,7 @@ function parseSFV(input, isSFV) {
             .filter(function (item) { return item; }), file = _a[0], checksum = _a[1];
         return file && checksum
             ? {
-                file: file,
+                file: path.normalize(file),
                 checksum: checksum
             }
             : null;

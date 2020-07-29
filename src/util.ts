@@ -1,6 +1,7 @@
 import meta from '../package.json';
 
 import { createReadStream, promises as fs } from 'fs';
+import { normalize as normalizePath } from 'path';
 import cyclic32 from 'cyclic-32';
 import hasha from 'hasha';
 import ora from 'ora';
@@ -170,7 +171,7 @@ function parseSFV(input: string | string[], isSFV = true): SFVObject[] {
 
     return file && checksum
       ? {
-        file,
+        file: normalizePath(file),
         checksum
       }
       : null;
