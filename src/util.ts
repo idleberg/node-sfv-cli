@@ -95,9 +95,7 @@ async function getSFVLine(files: string[], printOutput: boolean, failFast: boole
     } catch (e) {
       if (failFast) {
         spinner.fail(`${file} ${chalk.dim(e)}`)
-        console.error(`\n🔥 Failing fast to error`);
-
-        process.exit();
+        softThrowError('Failing fast to error', true);
       }
       if (!printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
     }
@@ -167,6 +165,18 @@ function setComment(useWinSFV: boolean): string {
     : `; ${meta.name} v${meta.version} | ${meta.homepage}\n;`;
 }
 
+function softThrowError(message: string, newLine = false): void {
+  process.on('exit', () => {
+    message = newLine
+      ? `\n🔥 ${message}`
+      : `🔥 ${message}`;
+
+    console.log(message);
+  });
+
+  process.exit();
+}
+
 function stripComments(lines: string[]): string[] {
   return lines.filter(line =>
     !line
@@ -203,5 +213,6 @@ export {
   readSFV,
   setComment,
   stripComments,
+  softThrowError,
   writeSFV
 };

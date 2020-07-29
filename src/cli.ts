@@ -5,6 +5,7 @@ import {
   getSFVLine,
   printTitle,
   setComment,
+  softThrowError,
   writeSFV
 } from './util.js';
 
@@ -71,8 +72,7 @@ async function validationMode() {
   try {
     await compareSFV(files, program.failFast);
   } catch (e) {
-    console.error(`\n🔥 Failing fast due to mismatch`);
-    process.exit();
+    softThrowError('Failing fast due to mismatch');
   }
 
   return console.timeEnd(completedIn);
