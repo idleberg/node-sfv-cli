@@ -9,6 +9,8 @@ CLI tool to verify and create SFV files (see [Simple File Verification](https://
 
 ![Screenshot](https://raw.github.com/idleberg/node-sfv-cli/master/screenshot.png)
 
+**Note:** A custom, SFV-like format (`.sfvx`) using modern hashing algorithms is also supported
+
 ## Installation
 
 `yarn global add sfv-cli || npm install --global sfv-cli`
