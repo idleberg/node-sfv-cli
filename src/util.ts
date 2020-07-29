@@ -103,7 +103,7 @@ function detectHash(algorithm: string): string {
 }
 
 async function calculateChecksum(files: string[], options: CalculateOptions): Promise<string[]> {
-  if (!options.printOutput) {
+  if (!options.print) {
     const checksum = (files.length === 1)
       ? 'checksum'
       : 'checksums';
@@ -115,22 +115,24 @@ async function calculateChecksum(files: string[], options: CalculateOptions): Pr
     let spinner;
     let checksum;
 
-    if (!options.printOutput) {
+    if (!options.print) {
       spinner = ora(`${file}`).start();
     }
 
     try {
       checksum = await checksumFromFile(file, options.algorithm);
-      if (!options.printOutput) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
+      if (!options.print) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
       if (options.failFast) {
         spinner.fail(`${file} ${chalk.dim(e)}`)
         softThrow('Failing fast to error', true);
       }
-      if (!options.printOutput) spinner.fail(`${file} ${chalk.dim(e)}`);
+      if (!options.print) spinner.fail(`${file} ${chalk.dim(e)}`);
     }
 
-    return `${file} ${checksum}`;
+    return file && checksum
+      ? `${file} ${checksum}`
+      : '';
   }));
 }
 

@@ -447,7 +447,7 @@ function calculateChecksum(files, options) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!options.printOutput) {
+                    if (!options.print) {
                         checksum = (files.length === 1)
                             ? 'checksum'
                             : 'checksums';
@@ -458,7 +458,7 @@ function calculateChecksum(files, options) {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        if (!options.printOutput) {
+                                        if (!options.print) {
                                             spinner = ora("" + file).start();
                                         }
                                         _a.label = 1;
@@ -467,7 +467,7 @@ function calculateChecksum(files, options) {
                                         return [4 /*yield*/, checksumFromFile(file, options.algorithm)];
                                     case 2:
                                         checksum = _a.sent();
-                                        if (!options.printOutput)
+                                        if (!options.print)
                                             spinner.succeed(file + " " + chalk.blue(checksum));
                                         return [3 /*break*/, 4];
                                     case 3:
@@ -476,10 +476,12 @@ function calculateChecksum(files, options) {
                                             spinner.fail(file + " " + chalk.dim(e_2));
                                             softThrow('Failing fast to error', true);
                                         }
-                                        if (!options.printOutput)
+                                        if (!options.print)
                                             spinner.fail(file + " " + chalk.dim(e_2));
                                         return [3 /*break*/, 4];
-                                    case 4: return [2 /*return*/, file + " " + checksum];
+                                    case 4: return [2 /*return*/, file && checksum
+                                            ? file + " " + checksum
+                                            : ''];
                                 }
                             });
                         }); }))];
@@ -647,6 +649,8 @@ function creationMode() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    if (program.algorithm && program.winsfv)
+                        softThrow('The algorithm and WinSFV options can\'t be combined', true);
                     algorithm = program.algorithm
                         ? program.algorithm
                         : 'crc32';

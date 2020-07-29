@@ -49,9 +49,11 @@ const files = program.args;
 })();
 
 async function creationMode() {
+  if (program.algorithm && program.winsfv) softThrow('The algorithm and WinSFV options can\'t be combined', true);
+
   const algorithm = program.algorithm
-    ? program.algorithm
-    : 'crc32';
+  ? program.algorithm
+  : 'crc32';
 
   const options = {
     algorithm: algorithm,
