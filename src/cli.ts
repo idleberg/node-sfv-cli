@@ -22,15 +22,14 @@ program
   .option('-w, --winsfv', 'enables WinSFV compatibility', false)
   .parse(process.argv);
 
+const completedIn = '\n✨ Completed in';
+const lineBreak = program.winsfv
+  ? '\r\n'
+  : '\n';
+const files = program.args;
+
 (async () => {
-  const completedIn = '\n✨ Completed in';
-  const lineBreak = program.winsfv
-    ? '\r\n'
-    : '\n';
-
   if (!program.print) console.time(completedIn)
-
-  const files = program.args;
 
   if (files.length) {
     if (!program.print) printTitle();
@@ -38,35 +37,43 @@ program
     const sfvFiles = files.filter(file => file.endsWith('.sfv'));
 
     if (files.length && files.length === sfvFiles.length) {
-      try {
-        await compareSFV(files, program.failFast);
-      } catch (e) {
-        console.error(`\n🔥 Failing fast due to mismatch`);
-        process.exit();
-      }
-
-      return console.timeEnd(completedIn);
+      return await validationMode();
     } else {
-      let sfvFile = await getSFVLine(files, program.print, program.failFast);
-
-      sfvFile.unshift(setComment(program.winsfv));
-      sfvFile = sfvFile.filter(line => line);
-
-      const outputString = program.sortx
-        ? sfvFile.sort().join(lineBreak)
-        : sfvFile.join(lineBreak);
-
-      if (!program.print) {
-        if (program.output) {
-          await writeSFV(program.output, outputString);
-        }
-
-        console.timeEnd(completedIn);
-      } else {
-        console.log(outputString);
-      }
+      return await creationMode();
     }
   } else {
     program.help();
   }
 })();
+
+async function creationMode() {
+  let sfvFile = await getSFVLine(files, program.print, program.failFast);
+
+  sfvFile.unshift(setComment(program.winsfv));
+  sfvFile = sfvFile.filter(line => line);
+
+  const outputString = program.sortx
+    ? sfvFile.sort().join(lineBreak)
+    : sfvFile.join(lineBreak);
+
+  if (!program.print) {
+    if (program.output) {
+      await writeSFV(program.output, outputString);
+    }
+
+    console.timeEnd(completedIn);
+  } else {
+    console.log(outputString);
+  }
+}
+
+async function validationMode() {
+  try {
+    await compareSFV(files, program.failFast);
+  } catch (e) {
+    console.error(`\n🔥 Failing fast due to mismatch`);
+    process.exit();
+  }
+
+  return console.timeEnd(completedIn);
+}

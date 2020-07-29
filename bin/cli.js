@@ -63,7 +63,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.3.1";
+var version = "0.3.2";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -94,7 +94,8 @@ var dependencies = {
 	commander: "^6.0.0",
 	"cyclic-32": "^1.1.0",
 	ora: "^4.0.5",
-	"terminal-link": "^2.1.1"
+	"terminal-link": "^2.1.1",
+	"update-notifier": "^4.1.0"
 };
 var devDependencies = {
 	"@rollup/plugin-commonjs": "^14.0.0",
@@ -565,61 +566,83 @@ program
     .option('-s, --sort', 'sorts output', false)
     .option('-w, --winsfv', 'enables WinSFV compatibility', false)
     .parse(process.argv);
+var completedIn = '\n✨ Completed in';
+var lineBreak = program.winsfv
+    ? '\r\n'
+    : '\n';
+var files = program.args;
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var completedIn, lineBreak, files, sfvFiles, e_1, sfvFile, outputString;
+    var sfvFiles;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                completedIn = '\n✨ Completed in';
-                lineBreak = program.winsfv
-                    ? '\r\n'
-                    : '\n';
                 if (!program.print)
                     console.time(completedIn);
-                files = program.args;
-                if (!files.length) return [3 /*break*/, 11];
+                if (!files.length) return [3 /*break*/, 5];
                 if (!program.print)
                     printTitle();
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv'); });
-                if (!(files.length && files.length === sfvFiles.length)) return [3 /*break*/, 5];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, compareSFV(files, program.failFast)];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
-                e_1 = _a.sent();
-                console.error("\n\uD83D\uDD25 Failing fast due to mismatch");
-                process.exit();
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/, console.timeEnd(completedIn)];
-            case 5: return [4 /*yield*/, getSFVLine(files, program.print, program.failFast)];
-            case 6:
-                sfvFile = _a.sent();
-                sfvFile.unshift(setComment(program.winsfv));
-                sfvFile = sfvFile.filter(function (line) { return line; });
-                outputString = program.sortx
-                    ? sfvFile.sort().join(lineBreak)
-                    : sfvFile.join(lineBreak);
-                if (!!program.print) return [3 /*break*/, 9];
-                if (!program.output) return [3 /*break*/, 8];
-                return [4 /*yield*/, writeSFV(program.output, outputString)];
-            case 7:
-                _a.sent();
-                _a.label = 8;
-            case 8:
-                console.timeEnd(completedIn);
-                return [3 /*break*/, 10];
-            case 9:
-                console.log(outputString);
-                _a.label = 10;
-            case 10: return [3 /*break*/, 12];
-            case 11:
+                if (!(files.length && files.length === sfvFiles.length)) return [3 /*break*/, 2];
+                return [4 /*yield*/, validationMode()];
+            case 1: return [2 /*return*/, _a.sent()];
+            case 2: return [4 /*yield*/, creationMode()];
+            case 3: return [2 /*return*/, _a.sent()];
+            case 4: return [3 /*break*/, 6];
+            case 5:
                 program.help();
-                _a.label = 12;
-            case 12: return [2 /*return*/];
+                _a.label = 6;
+            case 6: return [2 /*return*/];
         }
     });
 }); })();
+function creationMode() {
+    return __awaiter(this, void 0, void 0, function () {
+        var sfvFile, outputString;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getSFVLine(files, program.print, program.failFast)];
+                case 1:
+                    sfvFile = _a.sent();
+                    sfvFile.unshift(setComment(program.winsfv));
+                    sfvFile = sfvFile.filter(function (line) { return line; });
+                    outputString = program.sortx
+                        ? sfvFile.sort().join(lineBreak)
+                        : sfvFile.join(lineBreak);
+                    if (!!program.print) return [3 /*break*/, 4];
+                    if (!program.output) return [3 /*break*/, 3];
+                    return [4 /*yield*/, writeSFV(program.output, outputString)];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    console.timeEnd(completedIn);
+                    return [3 /*break*/, 5];
+                case 4:
+                    console.log(outputString);
+                    _a.label = 5;
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function validationMode() {
+    return __awaiter(this, void 0, void 0, function () {
+        var e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, compareSFV(files, program.failFast)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.error("\n\uD83D\uDD25 Failing fast due to mismatch");
+                    process.exit();
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/, console.timeEnd(completedIn)];
+            }
+        });
+    });
+}
