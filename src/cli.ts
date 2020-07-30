@@ -16,7 +16,7 @@ program
   .description(meta.description)
   .arguments('[options] <file ...>')
   .usage('[options] <file ...>')
-  .option('-a, --algorithm <algorithm>', 'specifies hashing algorithm', false)
+  .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm', 'sha1')
   .option('-f, --fail-fast', 'stops execution after first error', false)
   .option('-o, --output <file>', 'specifies output file')
   .option('-p, --print', 'prints SFV file to stdout', false)

@@ -33,12 +33,12 @@ Running `sfv --help` lists all available flags
 
 ```
   -V, --version                output the version number
-  -a, --algorithm <algorithm>  specifies hashing algorithm
-  -f, --fail-fast              stops execution after first error
+  -a, --algorithm [algorithm]  specifies hashing algorithm (default: "sha1")
+  -f, --fail-fast              stops execution after first error (default: false)
   -o, --output <file>          specifies output file
-  -p, --print                  prints SFV file to stdout
-  -s, --sort                   sorts output
-  -w, --winsfv                 enables WinSFV compatibility
+  -p, --print                  prints SFV file to stdout (default: false)
+  -s, --sort                   sorts output (default: false)
+  -w, --winsfv                 enables WinSFV compatibility (default: false)
   -h, --help                   display help for command
 ```
 
