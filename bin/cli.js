@@ -579,31 +579,35 @@ function stripComments(lines) {
             .startsWith(';');
     });
 }
-function writeSFV(fileName, fileContents, algorithm) {
+function writeSFV(fileName, fileContents, options) {
     return __awaiter(this, void 0, void 0, function () {
         var fileExtension, outputFile, spinner, e_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    fileExtension = algorithm === 'crc32'
+                    fileExtension = options.algorithm === 'crc32'
                         ? '.sfv'
                         : '.sfvx';
                     outputFile = fileName.endsWith(fileExtension)
                         ? fileName
                         : "" + fileName + fileExtension;
-                    console.log('\nWriting output:');
-                    spinner = ora(outputFile).start();
+                    if (!options.print) {
+                        console.log('\nWriting output:');
+                        spinner = ora(outputFile).start();
+                    }
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, fs.promises.writeFile(outputFile, fileContents)];
                 case 2:
                     _a.sent();
-                    spinner.succeed(outputFile);
+                    if (!options.print)
+                        spinner.succeed(outputFile);
                     return [3 /*break*/, 4];
                 case 3:
                     e_3 = _a.sent();
-                    spinner.fail(outputFile + " " + chalk.dim(e_3));
+                    if (!options.print)
+                        spinner.fail(outputFile + " " + chalk.dim(e_3));
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -654,7 +658,7 @@ var files = program.args;
 }); })();
 function creationMode() {
     return __awaiter(this, void 0, void 0, function () {
-        var algorithm, options, sfvFile, outputString;
+        var algorithm, options, sfvFile, outputString, writeOptions;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -678,19 +682,23 @@ function creationMode() {
                     outputString = program.sort
                         ? sfvFile.sort().join(lineBreak)
                         : sfvFile.join(lineBreak);
-                    if (!!program.print) return [3 /*break*/, 4];
                     if (!program.output) return [3 /*break*/, 3];
-                    return [4 /*yield*/, writeSFV(program.output, outputString, algorithm)];
+                    writeOptions = {
+                        algorithm: algorithm,
+                        print: program.print
+                    };
+                    return [4 /*yield*/, writeSFV(program.output, outputString, writeOptions)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
                 case 3:
-                    console.timeEnd(completedIn);
-                    return [3 /*break*/, 5];
-                case 4:
-                    console.log(outputString);
-                    _a.label = 5;
-                case 5: return [2 /*return*/];
+                    if (!program.print) {
+                        console.timeEnd(completedIn);
+                    }
+                    else {
+                        console.log(outputString);
+                    }
+                    return [2 /*return*/];
             }
         });
     });

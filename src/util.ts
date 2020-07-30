@@ -8,7 +8,7 @@ import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
 
-import { DateObject, SFVObject, CalculateOptions } from '../types/util';
+import { DateObject, SFVObject, FlagOptions } from '../types/sfv';
 
 function bufferToString(inputBuffer: Buffer): string {
   const outputString = [];
@@ -103,7 +103,7 @@ function detectHash(algorithm: string): string {
   }
 }
 
-async function calculateChecksum(files: string[], options: CalculateOptions): Promise<string[]> {
+async function calculateChecksum(files: string[], options: FlagOptions): Promise<string[]> {
   if (!options.print) {
     const checksum = (files.length === 1)
       ? 'checksum'
@@ -234,8 +234,8 @@ function stripComments(lines: string[]): string[] {
   )
 }
 
-async function writeSFV(fileName: string, fileContents: string, algorithm: string): Promise<void> {
-  const fileExtension = algorithm === 'crc32'
+async function writeSFV(fileName: string, fileContents: string, options: FlagOptions): Promise<void> {
+  const fileExtension = options.algorithm === 'crc32'
     ? '.sfv'
     : '.sfvx';
 
@@ -243,14 +243,18 @@ async function writeSFV(fileName: string, fileContents: string, algorithm: strin
     ? fileName
     : `${fileName}${fileExtension}`;
 
-  console.log('\nWriting output:');
-  const spinner = ora(outputFile).start();
+  let spinner;
+
+  if (!options.print) {
+    console.log('\nWriting output:');
+    spinner = ora(outputFile).start();
+  }
 
   try {
     await fs.writeFile(outputFile, fileContents);
-    spinner.succeed(outputFile);
+    if (!options.print) spinner.succeed(outputFile);
   } catch (e) {
-    spinner.fail(`${outputFile} ${chalk.dim(e)}`);
+    if (!options.print) spinner.fail(`${outputFile} ${chalk.dim(e)}`);
   }
 }
 

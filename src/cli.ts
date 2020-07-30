@@ -8,6 +8,7 @@ import {
   softThrow,
   writeSFV
 } from './util.js';
+import { FlagOptions } from '../types/sfv';
 
 import program from 'commander';
 
@@ -72,11 +73,16 @@ async function creationMode() {
     ? sfvFile.sort().join(lineBreak)
     : sfvFile.join(lineBreak);
 
-  if (!program.print) {
-    if (program.output) {
-      await writeSFV(program.output, outputString, algorithm);
+  if (program.output) {
+    const writeOptions: FlagOptions = {
+      algorithm,
+      print: program.print
     }
 
+    await writeSFV(program.output, outputString, writeOptions);
+  }
+
+  if (!program.print) {
     console.timeEnd(completedIn);
   } else {
     console.log(outputString);
