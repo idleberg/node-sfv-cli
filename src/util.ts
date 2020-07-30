@@ -121,7 +121,7 @@ async function calculateChecksum(files: string[], options: CalculateOptions): Pr
     }
 
     try {
-      checksum = await checksumFromFile(file, options.algorithm);
+      checksum = await checksumFromFile(file, normalizeAlgorithm(options.algorithm));
       if (!options.print) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
       if (options.failFast) {
@@ -133,7 +133,7 @@ async function calculateChecksum(files: string[], options: CalculateOptions): Pr
 
     return file && checksum
       ? `${normalizePath(file)} ${checksum}`
-      : '';
+      : null;
   }));
 }
 
@@ -151,7 +151,12 @@ function getDate(): DateObject {
 }
 
 function isSupportedAlgorithm(algorithm: string): boolean {
-  return ['md5', 'sha1', 'sha256', 'sha512'].includes(algorithm.replace('-', '').toLowerCase());
+  console.log(algorithm)
+  return ['md5', 'sha1', 'sha256', 'sha512'].includes(algorithm);
+}
+
+function normalizeAlgorithm(algorithm: string): string {
+  return algorithm.replace('-', '').toLowerCase();
 }
 
 function parseSFV(input: string | string[], isSFV = true): SFVObject[] {

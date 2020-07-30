@@ -61,7 +61,9 @@ async function creationMode() {
     print: program.print
   };
 
-  let sfvFile = await calculateChecksum(files, options);
+  let sfvFile = (await calculateChecksum(files, options)).filter(item => item);
+
+  if (!sfvFile.length) softThrow('Aborting, empty SFV file', true);
 
   sfvFile.unshift(setComment(program.winsfv));
   sfvFile = sfvFile.filter(line => line);

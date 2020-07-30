@@ -470,7 +470,7 @@ function calculateChecksum(files, options) {
                                         _a.label = 1;
                                     case 1:
                                         _a.trys.push([1, 3, , 4]);
-                                        return [4 /*yield*/, checksumFromFile(file, options.algorithm)];
+                                        return [4 /*yield*/, checksumFromFile(file, normalizeAlgorithm(options.algorithm))];
                                     case 2:
                                         checksum = _a.sent();
                                         if (!options.print)
@@ -487,7 +487,7 @@ function calculateChecksum(files, options) {
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/, file && checksum
                                             ? path.normalize(file) + " " + checksum
-                                            : ''];
+                                            : null];
                                 }
                             });
                         }); }))];
@@ -506,6 +506,9 @@ function getDate() {
         minutes: date.getMinutes().toString().padStart(2, '0'),
         seconds: date.getSeconds().toString().padStart(2, '0')
     };
+}
+function normalizeAlgorithm(algorithm) {
+    return algorithm.replace('-', '').toLowerCase();
 }
 function parseSFV(input, isSFV) {
     if (isSFV === void 0) { isSFV = true; }
@@ -667,7 +670,9 @@ function creationMode() {
                     };
                     return [4 /*yield*/, calculateChecksum(files, options)];
                 case 1:
-                    sfvFile = _a.sent();
+                    sfvFile = (_a.sent()).filter(function (item) { return item; });
+                    if (!sfvFile.length)
+                        softThrow('Aborting, empty SFV file', true);
                     sfvFile.unshift(setComment(program.winsfv));
                     sfvFile = sfvFile.filter(function (line) { return line; });
                     outputString = program.sort
