@@ -65,7 +65,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.4.0";
+var version = "0.4.1";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -614,7 +614,7 @@ program
     .arguments('[options] <file ...>')
     .usage('[options] <file ...>')
     .option('-a, --algorithm <algorithm>', 'specifies hashing algorithm', false)
-    .option('-f, --fail-fast', 'aborts verifying after first mismatch', false)
+    .option('-f, --fail-fast', 'stops execution after first error', false)
     .option('-o, --output <file>', 'specifies output file')
     .option('-p, --print', 'prints SFV file to stdout', false)
     .option('-s, --sort', 'sorts output', false)

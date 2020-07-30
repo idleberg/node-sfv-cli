@@ -29,12 +29,12 @@ sfv vlc.sfv
 
 ### Options
 
-Running `sfv --help` list available flags
+Running `sfv --help` lists all available flags
 
 ```
   -V, --version                output the version number
   -a, --algorithm <algorithm>  specifies hashing algorithm
-  -f, --fail-fast              aborts verifying after first mismatch
+  -f, --fail-fast              stops execution after first error
   -o, --output <file>          specifies output file
   -p, --print                  prints SFV file to stdout
   -s, --sort                   sorts output
