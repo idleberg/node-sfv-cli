@@ -1,6 +1,6 @@
 {
   "name": "sfv-cli",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "CLI tool to verify and create SFV files",
   "license": "MIT",
   "scripts": {
