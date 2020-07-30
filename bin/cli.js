@@ -486,7 +486,7 @@ function calculateChecksum(files, options) {
                                             spinner.fail(file + " " + chalk.dim(e_2));
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/, file && checksum
-                                            ? file + " " + checksum
+                                            ? path.normalize(file) + " " + checksum
                                             : ''];
                                 }
                             });
