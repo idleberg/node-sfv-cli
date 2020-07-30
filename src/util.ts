@@ -132,7 +132,7 @@ async function calculateChecksum(files: string[], options: CalculateOptions): Pr
     }
 
     return file && checksum
-      ? `${file} ${checksum}`
+      ? `${normalizePath(file)} ${checksum}`
       : '';
   }));
 }
