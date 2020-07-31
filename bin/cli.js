@@ -65,7 +65,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.4.2";
+var version = "0.4.3";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -620,7 +620,7 @@ program
     .description(meta.description)
     .arguments('[options] <file ...>')
     .usage('[options] <file ...>')
-    .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm', 'sha1')
+    .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
     .option('-f, --fail-fast', 'stops execution after first error', false)
     .option('-o, --output <file>', 'specifies output file')
     .option('-p, --print', 'prints SFV file to stdout', false)
@@ -668,7 +668,7 @@ function creationMode() {
                         ? program.algorithm
                         : 'crc32';
                     options = {
-                        algorithm: algorithm,
+                        algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
                         failFast: program.failFast,
                         print: program.print
                     };
