@@ -74,6 +74,7 @@ var license = "MIT";
 var scripts = {
 	build: "rollup --config",
 	dev: "npm run start",
+	fix: "eslint --fix ./src",
 	lint: "eslint ./src",
 	start: "rollup --watch --config",
 	test: "ava ./test/*.js --verbose"
