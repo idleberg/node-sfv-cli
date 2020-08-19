@@ -10,9 +10,9 @@ yarn.lock
 
 # project specific
 *.sfv
+!/test/**/*.sfv
 *.sfvx
-test/
-# !/test/**/*.sfv
+!/test/**/*.sfvx
 test.js
 test.ts
 todo.md
