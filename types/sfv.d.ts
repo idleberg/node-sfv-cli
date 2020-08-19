@@ -20,9 +20,3 @@ interface SFVObject {
   checksum: string;
   file: string;
 }
-
-export {
-  FlagOptions,
-  DateObject,
-  SFVObject
-}

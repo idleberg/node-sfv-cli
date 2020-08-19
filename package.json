@@ -8,9 +8,10 @@
     "dev": "npm run start",
     "lint": "eslint ./src",
     "start": "rollup --watch --config",
-    "test": "npm run lint"
+    "test": "ava ./test/*.js --verbose"
   },
   "main": "index.js",
+  "typings": "./types",
   "bin": {
     "sfv": "./index.js",
     "node-sfv": "./index.js"
@@ -50,6 +51,7 @@
     "ava": "^3.10.1",
     "eslint": "^7.5.0",
     "esm": "^3.2.25",
+    "execa": "^4.0.3",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
     "rollup": "^2.23.0",
