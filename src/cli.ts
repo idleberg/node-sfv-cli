@@ -9,6 +9,7 @@ import {
   writeSFV
 } from './util.js';
 
+import globby from 'globby';
 import program from 'commander';
 
 program
@@ -29,10 +30,11 @@ const completedIn = '\n✨ Completed in';
 const lineBreak = program.winsfv
   ? '\r\n'
   : '\n';
-const files = program.args;
 
 (async () => {
   if (!program.print) console.time(completedIn)
+
+  const files = await globby(program.args);
 
   if (files.length) {
     if (!program.print) printTitle();
@@ -40,16 +42,16 @@ const files = program.args;
     const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
 
     if (sfvFiles.length) {
-      return await validationMode();
+      return await validationMode(files);
     } else {
-      return await creationMode();
+      return await creationMode(files);
     }
   } else {
     program.help();
   }
 })();
 
-async function creationMode() {
+async function creationMode(files) {
   if (program.algorithm && program.winsfv) softThrow('The algorithm and WinSFV options can\'t be combined', true);
 
   const algorithm = program.algorithm
@@ -90,7 +92,7 @@ async function creationMode() {
   }
 }
 
-async function validationMode() {
+async function validationMode(files) {
   try {
     await compareSFV(files, program.failFast);
   } catch (e) {

@@ -104,6 +104,7 @@ var keywords = [
 var dependencies = {
 	chalk: "^4.1.0",
 	commander: "^6.0.0",
+	globby: "^11.0.1",
 	hasha: "^5.2.0",
 	ora: "^5.0.0",
 	"simple-file-verification": "^1.0.0",
@@ -776,32 +777,34 @@ var completedIn = '\n✨ Completed in';
 var lineBreak = program.winsfv
     ? '\r\n'
     : '\n';
-var files = program.args;
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var sfvFiles;
+    var files, sfvFiles;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 if (!program.print)
                     console.time(completedIn);
-                if (!files.length) return [3 /*break*/, 5];
+                return [4 /*yield*/, globby(program.args)];
+            case 1:
+                files = _a.sent();
+                if (!files.length) return [3 /*break*/, 6];
                 if (!program.print)
                     printTitle();
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv') || file.endsWith('.sfvx'); });
-                if (!sfvFiles.length) return [3 /*break*/, 2];
-                return [4 /*yield*/, validationMode()];
-            case 1: return [2 /*return*/, _a.sent()];
-            case 2: return [4 /*yield*/, creationMode()];
-            case 3: return [2 /*return*/, _a.sent()];
-            case 4: return [3 /*break*/, 6];
-            case 5:
+                if (!sfvFiles.length) return [3 /*break*/, 3];
+                return [4 /*yield*/, validationMode(files)];
+            case 2: return [2 /*return*/, _a.sent()];
+            case 3: return [4 /*yield*/, creationMode(files)];
+            case 4: return [2 /*return*/, _a.sent()];
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 program.help();
-                _a.label = 6;
-            case 6: return [2 /*return*/];
+                _a.label = 7;
+            case 7: return [2 /*return*/];
         }
     });
 }); })();
-function creationMode() {
+function creationMode(files) {
     return __awaiter(this, void 0, void 0, function () {
         var algorithm, options, sfvFile, outputString, writeOptions;
         return __generator(this, function (_a) {
@@ -849,7 +852,7 @@ function creationMode() {
         });
     });
 }
-function validationMode() {
+function validationMode(files) {
     return __awaiter(this, void 0, void 0, function () {
         var e_1;
         return __generator(this, function (_a) {
