@@ -68,7 +68,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.4.4";
+var version = "0.5.0";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -105,7 +105,7 @@ var dependencies = {
 	commander: "^6.0.0",
 	"cyclic-32": "^1.1.0",
 	hasha: "^5.2.0",
-	ora: "^4.0.5",
+	ora: "^5.0.0",
 	"simple-file-verification": "^1.0.0",
 	"terminal-link": "^2.1.1",
 	"update-notifier": "^4.1.0"
@@ -123,6 +123,7 @@ var devDependencies = {
 	execa: "^4.0.3",
 	glob: "^7.1.6",
 	husky: "^4.2.5",
+	rimraf: "^3.0.2",
 	rollup: "^2.23.0",
 	typescript: "^3.9.7"
 };
