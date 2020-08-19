@@ -1,31 +1,11 @@
 import meta from '../package.json';
 
-import { createReadStream, promises as fs } from 'fs';
+import { promises as fs } from 'fs';
 import { normalize as normalizePath } from 'path';
-import cyclic32 from 'cyclic-32';
-import hasha from 'hasha';
+import { fromFile as checksumFromFile } from 'simple-file-verification';
 import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
-
-async function checksumFromStream(stream: NodeJS.ReadableStream, algorithm: string): Promise<string> {
-  const hashingFunction = algorithm === 'crc32'
-    ? cyclic32.createHash()
-    : hasha.stream({algorithm});
-
-  return new Promise((resolve, reject) => {
-    stream
-      .pipe(hashingFunction)
-      .on('error', (err) => reject(err))
-      .on('data', buffer => resolve(buffer.toString('hex').toUpperCase()));
-  });
-}
-
-async function checksumFromFile(inputFile: string, algorithm: string): Promise<string> {
-  await fs.access(inputFile);
-
-  return await checksumFromStream(createReadStream(inputFile), algorithm);
-}
 
 async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
   console.log('\nVerifying files:');
@@ -244,8 +224,6 @@ async function writeSFV(fileName: string, fileContents: string, options: FlagOpt
 export {
   calculateChecksum,
   compareSFV,
-  checksumFromFile,
-  checksumFromStream,
   detectHash,
   getDate,
   isSupportedAlgorithm,
