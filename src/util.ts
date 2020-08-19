@@ -84,7 +84,7 @@ async function calculateChecksum(files: string[], options: FlagOptions): Promise
     }
 
     try {
-      checksum = await checksumFromFile(file, normalizeAlgorithm(options.algorithm));
+      checksum = await checksumFromFile(file, slugify(options.algorithm));
       if (!options.print) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
     } catch (e) {
       if (options.failFast) {
@@ -114,11 +114,10 @@ function getDate(): DateObject {
 }
 
 function isSupportedAlgorithm(algorithm: string): boolean {
-  console.log(algorithm)
-  return ['md5', 'sha1', 'sha256', 'sha512'].includes(algorithm);
+  return ['md5', 'sha1', 'sha256', 'sha512'].includes(slugify(algorithm));
 }
 
-function normalizeAlgorithm(algorithm: string): string {
+function slugify(algorithm: string): string {
   return algorithm.replace('-', '').toLowerCase();
 }
 

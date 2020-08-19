@@ -605,7 +605,7 @@ function calculateChecksum(files, options) {
                                         _a.label = 1;
                                     case 1:
                                         _a.trys.push([1, 3, , 4]);
-                                        return [4 /*yield*/, sfv.fromFile(file, normalizeAlgorithm(options.algorithm))];
+                                        return [4 /*yield*/, sfv.fromFile(file, slugify(options.algorithm))];
                                     case 2:
                                         checksum = _a.sent();
                                         if (!options.print)
@@ -642,7 +642,7 @@ function getDate() {
         seconds: date.getSeconds().toString().padStart(2, '0')
     };
 }
-function normalizeAlgorithm(algorithm) {
+function slugify(algorithm) {
     return algorithm.replace('-', '').toLowerCase();
 }
 function parseSFV(input, isSFV) {
