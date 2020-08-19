@@ -10,7 +10,7 @@ jobs:
           name: Installing cksfv
           command: |
             sudo apt-get -y update
-            sudo apt-get -y install cksfv md5 sha1sum sha256sum sha512sum
+            sudo apt-get -y install cksfv
       - restore_cache:
           name: Restore npm Package Data Cache
           key: dependency-cache-{{ checksum "package.json" }}
