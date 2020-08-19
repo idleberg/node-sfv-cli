@@ -2,25 +2,20 @@
 import test from 'ava';
 import execa from 'execa';
 import hasha from 'hasha';
-import { createReadStream } from 'fs';
+import rimraf from 'rimraf';
 import { resolve } from 'path';
+import { promisify } from 'util';
 
+const cleanup = promisify(rimraf);
 const CLI_SCRIPT =  resolve(__dirname, '..', 'bin', 'cli.js')
-
-const hashingLength = {
-  crc: 8,
-  md5: 32,
-  sha1: 40,
-  sha256: 64,
-  sha512: 128
-}
 
 // Tests
 test('CRC32: Read', async t => {
   const outName = await hasha.async(String(Date.now()))
 
-  const nodeSFV = (await execa('node', [CLI_SCRIPT, 'screenshot.png', '-o', `${outName}.sfv`]));
+  await execa('node', [CLI_SCRIPT, 'screenshot.png', '-o', `${outName}.sfv`]);
   const ckSFV = (await execa('cksfv', ['-g', `${outName}.sfv`]));
+  await cleanup(`${outName}.sfv`);
 
   const actual = ckSFV.exitCode;
   const expected = 0;
