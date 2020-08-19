@@ -41,6 +41,9 @@ Running `sfv --help` lists all available flags
   -w, --winsfv                 enables WinSFV compatibility (default: false)
   -h, --help                   display help for command
 ```
+## Related
+
+- [node-sfv](https://www.npmjs.com/package/simple-file-verification)
 
 ## License
 
