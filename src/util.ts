@@ -8,23 +8,6 @@ import ora from 'ora';
 import terminalLink from 'terminal-link';
 import chalk from 'chalk';
 
-import { DateObject, SFVObject, FlagOptions } from '../types/sfv';
-
-function bufferToString(inputBuffer: Buffer): string {
-  const outputString = [];
-
-  inputBuffer.forEach(item =>
-    outputString.push(
-      item
-        .toString(16)
-        .toUpperCase()
-        .padStart(2, '0')
-    )
-  );
-
-  return outputString.join('');
-}
-
 async function checksumFromStream(stream: NodeJS.ReadableStream, algorithm: string): Promise<string> {
   const hashingFunction = algorithm === 'crc32'
     ? cyclic32.createHash()
@@ -259,7 +242,6 @@ async function writeSFV(fileName: string, fileContents: string, options: FlagOpt
 }
 
 export {
-  bufferToString,
   calculateChecksum,
   compareSFV,
   checksumFromFile,

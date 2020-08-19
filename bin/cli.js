@@ -65,7 +65,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.4.3";
+var version = "0.4.4";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -73,9 +73,10 @@ var scripts = {
 	dev: "npm run start",
 	lint: "eslint ./src",
 	start: "rollup --watch --config",
-	test: "npm run lint"
+	test: "ava ./test/*.js --verbose"
 };
 var main = "index.js";
+var typings = "./types";
 var bin = {
 	sfv: "./index.js",
 	"node-sfv": "./index.js"
@@ -115,6 +116,7 @@ var devDependencies = {
 	ava: "^3.10.1",
 	eslint: "^7.5.0",
 	esm: "^3.2.25",
+	execa: "^4.0.3",
 	glob: "^7.1.6",
 	husky: "^4.2.5",
 	rollup: "^2.23.0",
@@ -137,6 +139,7 @@ var meta = {
 	license: license,
 	scripts: scripts,
 	main: main,
+	typings: typings,
 	bin: bin,
 	homepage: homepage,
 	repository: repository,

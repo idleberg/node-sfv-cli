@@ -8,7 +8,6 @@ import {
   softThrow,
   writeSFV
 } from './util.js';
-import { FlagOptions } from '../types/sfv';
 
 import program from 'commander';
 
