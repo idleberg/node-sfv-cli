@@ -18,6 +18,7 @@ program
   .usage('[options] <file ...>')
   .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
   .option('-F, --fail-fast', 'stops execution after first error', false)
+  .option('-f, --format', 'aligns checksums', false)
   .option('-o, --output <file>', 'specifies output file')
   .option('-p, --print', 'prints SFV file to stdout', false)
   .option('-s, --sort', 'sorts output', false)
@@ -58,6 +59,7 @@ async function creationMode() {
   const options = {
     algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
     failFast: program.failFast,
+    format: program.format,
     print: program.print
   };
 

@@ -75,6 +75,8 @@ async function calculateChecksum(files: string[], options: FlagOptions): Promise
     console.log(`\nCalculating ${checksum}:`);
   }
 
+  const longestString = getLongestString(files);
+
   return await Promise.all(files.map( async file => {
     let spinner;
     let checksum;
@@ -95,7 +97,9 @@ async function calculateChecksum(files: string[], options: FlagOptions): Promise
     }
 
     return file && checksum
-      ? `${normalizePath(file)} ${checksum}`
+      ? options.format
+        ? `${normalizePath(file)}${' '.repeat(longestString - file.length + 1)}${checksum}`
+        : `${normalizePath(file)} ${checksum}`
       : null;
   }));
 }
@@ -111,6 +115,13 @@ function getDate(): DateObject {
     minutes: date.getMinutes().toString().padStart(2, '0'),
     seconds: date.getSeconds().toString().padStart(2, '0')
   }
+}
+
+function getLongestString(input: string[]): number {
+  const map = input.map(x => normalizePath(x).length);
+  const max = map.indexOf(Math.max(...map));
+
+  return input[max].length;
 }
 
 function isSupportedAlgorithm(algorithm: string): boolean {
@@ -225,6 +236,7 @@ export {
   compareSFV,
   detectHash,
   getDate,
+  getLongestString,
   isSupportedAlgorithm,
   parseSFV,
   printTitle,

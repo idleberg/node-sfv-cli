@@ -33,8 +33,9 @@ Running `sfv --help` lists all available flags
 
 ```
   -V, --version                output the version number
-  -a, --algorithm [algorithm]  specifies hashing algorithm (default: "sha1")
-  -f, --fail-fast              stops execution after first error (default: false)
+  -a, --algorithm [algorithm]  specifies hashing algorithm
+  -F, --fail-fast              stops execution after first error (default: false)
+  -f, --format                 aligns checksums (default: false)
   -o, --output <file>          specifies output file
   -p, --print                  prints SFV file to stdout (default: false)
   -s, --sort                   sorts output (default: false)

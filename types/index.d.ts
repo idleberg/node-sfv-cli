@@ -6,6 +6,7 @@ declare module '*.json' {
 interface FlagOptions {
   algorithm?: string;
   failFast?: boolean;
+  format?: boolean;
   print?: boolean;
   output?: string;
   sort?: string;

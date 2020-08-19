@@ -584,7 +584,7 @@ function detectHash(algorithm) {
 }
 function calculateChecksum(files, options) {
     return __awaiter(this, void 0, void 0, function () {
-        var checksum;
+        var checksum, longestString;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -595,6 +595,7 @@ function calculateChecksum(files, options) {
                             : 'checksums';
                         console.log("\nCalculating " + checksum + ":");
                     }
+                    longestString = getLongestString(files);
                     return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
                             var spinner, checksum, e_2;
                             return __generator(this, function (_a) {
@@ -622,7 +623,9 @@ function calculateChecksum(files, options) {
                                             spinner.fail(file + " " + chalk.dim(e_2));
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/, file && checksum
-                                            ? path.normalize(file) + " " + checksum
+                                            ? options.format
+                                                ? "" + path.normalize(file) + ' '.repeat(longestString - file.length + 1) + checksum
+                                                : path.normalize(file) + " " + checksum
                                             : null];
                                 }
                             });
@@ -642,6 +645,11 @@ function getDate() {
         minutes: date.getMinutes().toString().padStart(2, '0'),
         seconds: date.getSeconds().toString().padStart(2, '0')
     };
+}
+function getLongestString(input) {
+    var map = input.map(function (x) { return path.normalize(x).length; });
+    var max = map.indexOf(Math.max.apply(Math, map));
+    return input[max].length;
 }
 function slugify(algorithm) {
     return algorithm.replace('-', '').toLowerCase();
@@ -758,6 +766,7 @@ program
     .usage('[options] <file ...>')
     .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
     .option('-F, --fail-fast', 'stops execution after first error', false)
+    .option('-f, --format', 'aligns checksums', false)
     .option('-o, --output <file>', 'specifies output file')
     .option('-p, --print', 'prints SFV file to stdout', false)
     .option('-s, --sort', 'sorts output', false)
@@ -806,6 +815,7 @@ function creationMode() {
                     options = {
                         algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
                         failFast: program.failFast,
+                        format: program.format,
                         print: program.print
                     };
                     return [4 /*yield*/, calculateChecksum(files, options)];
