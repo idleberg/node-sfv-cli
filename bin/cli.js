@@ -1,18 +1,26 @@
 'use strict';
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var fs = require('fs');
-var fs__default = _interopDefault(fs);
 var path = require('path');
-var path__default = _interopDefault(path);
-var stream = _interopDefault(require('stream'));
-var globby = _interopDefault(require('globby'));
-var hasha = _interopDefault(require('hasha'));
-var ora = _interopDefault(require('ora'));
-var terminalLink = _interopDefault(require('terminal-link'));
-var chalk = _interopDefault(require('chalk'));
-var program = _interopDefault(require('commander'));
+var crypto = require('crypto');
+var stream = require('stream');
+var globby = require('globby');
+var ora = require('ora');
+var terminalLink = require('terminal-link');
+var chalk = require('chalk');
+var program = require('commander');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+var stream__default = /*#__PURE__*/_interopDefaultLegacy(stream);
+var globby__default = /*#__PURE__*/_interopDefaultLegacy(globby);
+var ora__default = /*#__PURE__*/_interopDefaultLegacy(ora);
+var terminalLink__default = /*#__PURE__*/_interopDefaultLegacy(terminalLink);
+var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+var program__default = /*#__PURE__*/_interopDefaultLegacy(program);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -105,28 +113,28 @@ var dependencies = {
 	chalk: "^4.1.0",
 	commander: "^6.0.0",
 	globby: "^11.0.1",
-	hasha: "^5.2.0",
 	ora: "^5.0.0",
-	"simple-file-verification": "^1.0.0",
+	"simple-file-verification": "^1.1.0",
 	"terminal-link": "^2.1.1",
-	"update-notifier": "^4.1.0"
+	"update-notifier": "^4.1.1"
 };
 var devDependencies = {
-	"@rollup/plugin-commonjs": "^14.0.0",
+	"@rollup/plugin-commonjs": "^15.0.0",
 	"@rollup/plugin-json": "^4.1.0",
 	"@rollup/plugin-typescript": "^5.0.2",
-	"@types/node": "^14.0.26",
-	"@typescript-eslint/eslint-plugin": "^3.7.0",
-	"@typescript-eslint/parser": "^3.7.0",
-	ava: "^3.10.1",
-	eslint: "^7.5.0",
+	"@types/node": "^14.6.0",
+	"@typescript-eslint/eslint-plugin": "^3.9.1",
+	"@typescript-eslint/parser": "^3.9.1",
+	ava: "^3.11.1",
+	eslint: "^7.7.0",
 	esm: "^3.2.25",
 	execa: "^4.0.3",
 	glob: "^7.1.6",
+	hasha: "^5.2.0",
 	husky: "^4.2.5",
 	rimraf: "^3.0.2",
-	rollup: "^2.23.0",
-	typescript: "^3.9.7"
+	rollup: "^2.26.4",
+	typescript: ">=3.3.1 <3.10.0"
 };
 var husky = {
 	hooks: {
@@ -182,9 +190,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var stream__default = /*#__PURE__*/_interopDefaultLegacy(stream);
-var globby__default = /*#__PURE__*/_interopDefaultLegacy(globby);
-var hasha__default = /*#__PURE__*/_interopDefaultLegacy(hasha);
+var stream__default$1 = /*#__PURE__*/_interopDefaultLegacy(stream__default['default']);
+var globby__default$1 = /*#__PURE__*/_interopDefaultLegacy(globby__default['default']);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -378,7 +385,7 @@ crc32.TABLE = {
  * @param {Int32Array} [options.table=crc32.TABLE.DEFAULT]
  * @returns {CRC32Stream}
  */
-crc32.Hash = class CRC32Stream extends stream__default['default'].Transform {
+crc32.Hash = class CRC32Stream extends stream__default$1['default'].Transform {
 
   constructor( options ) {
     super( options );
@@ -431,9 +438,7 @@ function fromStream(stream, algorithm) {
             algorithmSlug = slugify(algorithm);
             hashingFunction = algorithmSlug === 'crc32'
                 ? crc32_1.createHash()
-                : hasha__default['default'].stream({
-                    algorithm: algorithmSlug
-                });
+                : crypto__default['default'].createHash(algorithm);
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     stream
                         .pipe(hashingFunction)
@@ -448,10 +453,10 @@ function fromFile(inputFile, algorithm) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fs__default.promises.access(inputFile)];
+                case 0: return [4 /*yield*/, fs__default['default'].promises.access(inputFile)];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, fromStream(fs__default.createReadStream(inputFile), algorithm)];
+                    return [4 /*yield*/, fromStream(fs__default['default'].createReadStream(inputFile), algorithm)];
                 case 2: return [2 /*return*/, _a.sent()];
             }
         });
@@ -464,7 +469,7 @@ function fromFiles(globString, algorithm) {
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, globby__default['default'](globString)];
+                case 0: return [4 /*yield*/, globby__default$1['default'](globString)];
                 case 1:
                     inputFiles = _a.sent();
                     return [2 /*return*/, Promise.all(inputFiles.map(function (inputFile) { return __awaiter(_this, void 0, void 0, function () {
@@ -473,7 +478,7 @@ function fromFiles(globString, algorithm) {
                                 switch (_b.label) {
                                     case 0:
                                         _a = {
-                                            file: path__default.relative(process.cwd(), inputFile)
+                                            file: path__default['default'].relative(process.cwd(), inputFile)
                                         };
                                         return [4 /*yield*/, fromFile(inputFile, algorithm)];
                                     case 1: return [2 /*return*/, (_a.checksum = _b.sent(),
@@ -520,7 +525,7 @@ function compareSFV(sfvFiles, failFast) {
                                                     return __generator(this, function (_b) {
                                                         switch (_b.label) {
                                                             case 0:
-                                                                spinner = ora(file).start();
+                                                                spinner = ora__default['default'](file).start();
                                                                 algorithm = sfvFile.endsWith('.sfvx')
                                                                     ? detectHash(checksum)
                                                                     : 'crc32';
@@ -533,7 +538,7 @@ function compareSFV(sfvFiles, failFast) {
                                                                 return [3 /*break*/, 4];
                                                             case 3:
                                                                 e_1 = _b.sent();
-                                                                spinner.fail(file + " " + chalk.red(checksum) + " " + chalk.dim(e_1));
+                                                                spinner.fail(file + " " + chalk__default['default'].red(checksum) + " " + chalk__default['default'].dim(e_1));
                                                                 if (failFast) {
                                                                     throw 'Failing fast';
                                                                 }
@@ -542,10 +547,10 @@ function compareSFV(sfvFiles, failFast) {
                                                                 }
                                                             case 4:
                                                                 if (checksum === actualChecksum) {
-                                                                    spinner.succeed(file + " " + chalk.blue(checksum));
+                                                                    spinner.succeed(file + " " + chalk__default['default'].blue(checksum));
                                                                 }
                                                                 else {
-                                                                    spinner.fail(file + " " + chalk.red(checksum) + " (actual: " + chalk.blue(actualChecksum) + ")");
+                                                                    spinner.fail(file + " " + chalk__default['default'].red(checksum) + " (actual: " + chalk__default['default'].blue(actualChecksum) + ")");
                                                                     if (failFast)
                                                                         throw 'Failing fast';
                                                                 }
@@ -603,7 +608,7 @@ function calculateChecksum(files, options) {
                                 switch (_a.label) {
                                     case 0:
                                         if (!options.print) {
-                                            spinner = ora("" + file).start();
+                                            spinner = ora__default['default']("" + file).start();
                                         }
                                         _a.label = 1;
                                     case 1:
@@ -612,16 +617,16 @@ function calculateChecksum(files, options) {
                                     case 2:
                                         checksum = _a.sent();
                                         if (!options.print)
-                                            spinner.succeed(file + " " + chalk.blue(checksum));
+                                            spinner.succeed(file + " " + chalk__default['default'].blue(checksum));
                                         return [3 /*break*/, 4];
                                     case 3:
                                         e_2 = _a.sent();
                                         if (options.failFast) {
-                                            spinner.fail(file + " " + chalk.dim(e_2));
+                                            spinner.fail(file + " " + chalk__default['default'].dim(e_2));
                                             softThrow('Failing fast to error', true);
                                         }
                                         if (!options.print)
-                                            spinner.fail(file + " " + chalk.dim(e_2));
+                                            spinner.fail(file + " " + chalk__default['default'].dim(e_2));
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/, file && checksum
                                             ? options.format
@@ -678,7 +683,7 @@ function parseSFV(input, isSFV) {
 }
 function printTitle() {
     var title = meta.name + " v" + meta.version;
-    var linkedTitle = terminalLink(title, meta.homepage, {
+    var linkedTitle = terminalLink__default['default'](title, meta.homepage, {
         fallback: function () {
             return title + " | " + meta.homepage;
         }
@@ -738,7 +743,7 @@ function writeSFV(fileName, fileContents, options) {
                         : "" + fileName + fileExtension;
                     if (!options.print) {
                         console.log('\nWriting output:');
-                        spinner = ora(outputFile).start();
+                        spinner = ora__default['default'](outputFile).start();
                     }
                     _a.label = 1;
                 case 1:
@@ -752,7 +757,7 @@ function writeSFV(fileName, fileContents, options) {
                 case 3:
                     e_3 = _a.sent();
                     if (!options.print)
-                        spinner.fail(outputFile + " " + chalk.dim(e_3));
+                        spinner.fail(outputFile + " " + chalk__default['default'].dim(e_3));
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -760,7 +765,7 @@ function writeSFV(fileName, fileContents, options) {
     });
 }
 
-program
+program__default['default']
     .version(meta.version)
     .description(meta.description)
     .arguments('[options] <file ...>')
@@ -774,7 +779,7 @@ program
     .option('-w, --winsfv', 'enables WinSFV compatibility', false)
     .parse(process.argv);
 var completedIn = '\n✨ Completed in';
-var lineBreak = program.winsfv
+var lineBreak = program__default['default'].winsfv
     ? '\r\n'
     : '\n';
 (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -782,13 +787,13 @@ var lineBreak = program.winsfv
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!program.print)
+                if (!program__default['default'].print)
                     console.time(completedIn);
-                return [4 /*yield*/, globby(program.args)];
+                return [4 /*yield*/, globby__default['default'](program__default['default'].args)];
             case 1:
                 files = _a.sent();
                 if (!files.length) return [3 /*break*/, 6];
-                if (!program.print)
+                if (!program__default['default'].print)
                     printTitle();
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv') || file.endsWith('.sfvx'); });
                 if (!sfvFiles.length) return [3 /*break*/, 3];
@@ -798,7 +803,7 @@ var lineBreak = program.winsfv
             case 4: return [2 /*return*/, _a.sent()];
             case 5: return [3 /*break*/, 7];
             case 6:
-                program.help();
+                program__default['default'].help();
                 _a.label = 7;
             case 7: return [2 /*return*/];
         }
@@ -810,38 +815,38 @@ function creationMode(files) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (program.algorithm && program.winsfv)
+                    if (program__default['default'].algorithm && program__default['default'].winsfv)
                         softThrow('The algorithm and WinSFV options can\'t be combined', true);
-                    algorithm = program.algorithm
-                        ? program.algorithm
+                    algorithm = program__default['default'].algorithm
+                        ? program__default['default'].algorithm
                         : 'crc32';
                     options = {
                         algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
-                        failFast: program.failFast,
-                        format: program.format,
-                        print: program.print
+                        failFast: program__default['default'].failFast,
+                        format: program__default['default'].format,
+                        print: program__default['default'].print
                     };
                     return [4 /*yield*/, calculateChecksum(files, options)];
                 case 1:
                     sfvFile = (_a.sent()).filter(function (item) { return item; });
                     if (!sfvFile.length)
                         softThrow('Aborting, empty SFV file', true);
-                    sfvFile.unshift(setComment(program.winsfv));
+                    sfvFile.unshift(setComment(program__default['default'].winsfv));
                     sfvFile = sfvFile.filter(function (line) { return line; });
-                    outputString = program.sort
+                    outputString = program__default['default'].sort
                         ? sfvFile.sort().join(lineBreak)
                         : sfvFile.join(lineBreak);
-                    if (!program.output) return [3 /*break*/, 3];
+                    if (!program__default['default'].output) return [3 /*break*/, 3];
                     writeOptions = {
                         algorithm: algorithm,
-                        print: program.print
+                        print: program__default['default'].print
                     };
-                    return [4 /*yield*/, writeSFV(program.output, outputString, writeOptions)];
+                    return [4 /*yield*/, writeSFV(program__default['default'].output, outputString, writeOptions)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
                 case 3:
-                    if (!program.print) {
+                    if (!program__default['default'].print) {
                         console.timeEnd(completedIn);
                     }
                     else {
@@ -859,7 +864,7 @@ function validationMode(files) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, compareSFV(files, program.failFast)];
+                    return [4 /*yield*/, compareSFV(files, program__default['default'].failFast)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
