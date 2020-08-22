@@ -68,12 +68,11 @@ async function creationMode(files) {
     print: program.print
   };
 
-  let sfvFile = (await calculateChecksum(files, options)).filter(item => item);
+  const sfvFile = (await calculateChecksum(files, options)).filter(item => item);
 
   if (!sfvFile.length) softThrow('Aborting, empty SFV file', true);
 
   sfvFile.unshift(setComment({comment: program.comment, winsfv: program.winsfv}));
-  sfvFile = sfvFile.filter(line => line);
 
   const outputString = program.sort
     ? sfvFile.sort().join(lineBreak)

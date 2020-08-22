@@ -852,7 +852,6 @@ function creationMode(files) {
                     if (!sfvFile.length)
                         softThrow('Aborting, empty SFV file', true);
                     sfvFile.unshift(setComment({ comment: program__default['default'].comment, winsfv: program__default['default'].winsfv }));
-                    sfvFile = sfvFile.filter(function (line) { return line; });
                     outputString = program__default['default'].sort
                         ? sfvFile.sort().join(lineBreak)
                         : sfvFile.join(lineBreak);
