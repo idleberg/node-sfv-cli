@@ -5,12 +5,13 @@ declare module '*.json' {
 
 interface FlagOptions {
   algorithm?: string;
+  comment?: string;
   failFast?: boolean;
   format?: boolean;
   print?: boolean;
   output?: string;
   sort?: string;
-  winsfv?: string;
+  winsfv?: boolean;
 }
 
 interface DateObject {

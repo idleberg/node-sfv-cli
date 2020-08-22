@@ -18,6 +18,7 @@ program
   .arguments('[options] <file ...>')
   .usage('[options] <file ...>')
   .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
+  .option('-c, --comment <string>', 'adds custom comment to output')
   .option('-F, --fail-fast', 'stops execution after first error', false)
   .option('-f, --format', 'aligns checksums', false)
   .option('-o, --output <file>', 'specifies output file')
@@ -52,7 +53,8 @@ const lineBreak = program.winsfv
 })();
 
 async function creationMode(files) {
-  if (program.algorithm && program.winsfv) softThrow('The algorithm and WinSFV options can\'t be combined', true);
+  if (program.algorithm && program.winsfv) softThrow('The algorithm and WinSFV flags can\'t be combined', true);
+  if (program.comment && program.winsfv) softThrow('The comment and WinSFV flags can\'t be combined', true);
 
   const algorithm = program.algorithm
   ? program.algorithm
@@ -60,6 +62,7 @@ async function creationMode(files) {
 
   const options = {
     algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
+    comment: program.comment || '',
     failFast: program.failFast,
     format: program.format,
     print: program.print
@@ -69,7 +72,7 @@ async function creationMode(files) {
 
   if (!sfvFile.length) softThrow('Aborting, empty SFV file', true);
 
-  sfvFile.unshift(setComment(program.winsfv));
+  sfvFile.unshift(setComment({comment: program.comment, winsfv: program.winsfv}));
   sfvFile = sfvFile.filter(line => line);
 
   const outputString = program.sort
