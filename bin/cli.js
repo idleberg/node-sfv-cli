@@ -14565,10 +14565,7 @@ var lineBreak = commander.winsfv
     var files, sfvFiles;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                if (!commander.print)
-                    console.time(completedIn);
-                return [4 /*yield*/, globby$1(commander.args)];
+            case 0: return [4 /*yield*/, globby$1(commander.args)];
             case 1:
                 files = _a.sent();
                 if (!files.length) return [3 /*break*/, 6];
@@ -14577,9 +14574,15 @@ var lineBreak = commander.winsfv
                 sfvFiles = files.filter(function (file) { return file.endsWith('.sfv') || file.endsWith('.sfvx'); });
                 if (!sfvFiles.length) return [3 /*break*/, 3];
                 return [4 /*yield*/, validationMode(files)];
-            case 2: return [2 /*return*/, _a.sent()];
-            case 3: return [4 /*yield*/, creationMode(files)];
-            case 4: return [2 /*return*/, _a.sent()];
+            case 2:
+                _a.sent();
+                _a.label = 3;
+            case 3:
+                if (!(files.length > sfvFiles.length)) return [3 /*break*/, 5];
+                return [4 /*yield*/, creationMode(files)];
+            case 4:
+                _a.sent();
+                _a.label = 5;
             case 5: return [3 /*break*/, 7];
             case 6:
                 commander.help();
@@ -14594,6 +14597,8 @@ function creationMode(files) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    if (!commander.print)
+                        console.time(completedIn);
                     if (commander.algorithm && commander.winsfv)
                         softThrow('The algorithm and WinSFV flags can\'t be combined', true);
                     if (commander.comment && commander.winsfv)
@@ -14644,16 +14649,20 @@ function validationMode(files) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, compareSFV(files, commander.failFast)];
+                    if (!commander.print)
+                        console.time(completedIn);
+                    _a.label = 1;
                 case 1:
-                    _a.sent();
-                    return [3 /*break*/, 3];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, compareSFV(files, commander.failFast)];
                 case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
                     e_1 = _a.sent();
                     softThrow('Failing fast due to mismatch');
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/, console.timeEnd(completedIn)];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/, console.timeEnd(completedIn)];
             }
         });
     });

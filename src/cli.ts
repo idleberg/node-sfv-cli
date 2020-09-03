@@ -33,8 +33,6 @@ const lineBreak = program.winsfv
   : '\n';
 
 (async () => {
-  if (!program.print) console.time(completedIn)
-
   const files = await globby(program.args);
 
   if (files.length) {
@@ -43,9 +41,11 @@ const lineBreak = program.winsfv
     const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
 
     if (sfvFiles.length) {
-      return await validationMode(files);
-    } else {
-      return await creationMode(files);
+      await validationMode(files);
+    }
+
+    if (files.length > sfvFiles.length) {
+      await creationMode(files);
     }
   } else {
     program.help();
@@ -53,6 +53,8 @@ const lineBreak = program.winsfv
 })();
 
 async function creationMode(files) {
+  if (!program.print) console.time(completedIn)
+
   if (program.algorithm && program.winsfv) softThrow('The algorithm and WinSFV flags can\'t be combined', true);
   if (program.comment && program.winsfv) softThrow('The comment and WinSFV flags can\'t be combined', true);
 
@@ -95,6 +97,8 @@ async function creationMode(files) {
 }
 
 async function validationMode(files) {
+  if (!program.print) console.time(completedIn)
+
   try {
     await compareSFV(files, program.failFast);
   } catch (e) {
