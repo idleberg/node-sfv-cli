@@ -91,7 +91,7 @@ function __generator(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.7.0";
+var version = "0.8.0";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
