@@ -141,7 +141,7 @@ var devDependencies = {
 	"@types/node": "^14.6.4",
 	"@typescript-eslint/eslint-plugin": "^4.0.1",
 	"@typescript-eslint/parser": "^4.0.1",
-	ava: "^4.2.1",
+	ava: "^3.12.1",
 	eslint: "^7.8.1",
 	esm: "^3.2.25",
 	execa: "^4.0.3",
@@ -9113,7 +9113,7 @@ function supportsColor(haveStream, streamIsTTY) {
 	}
 
 	if ('CI' in env) {
-		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
+		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
 			return 1;
 		}
 
@@ -9122,10 +9122,6 @@ function supportsColor(haveStream, streamIsTTY) {
 
 	if ('TEAMCITY_VERSION' in env) {
 		return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
-	}
-
-	if ('GITHUB_ACTIONS' in env) {
-		return 1;
 	}
 
 	if (env.COLORTERM === 'truecolor') {
@@ -9585,53 +9581,47 @@ mimicFn_1.default = _default;
 
 const calledFunctions = new WeakMap();
 
-const oneTime = (fn, options = {}) => {
-	if (typeof fn !== 'function') {
+const onetime = (function_, options = {}) => {
+	if (typeof function_ !== 'function') {
 		throw new TypeError('Expected a function');
 	}
 
-	let ret;
-	let isCalled = false;
+	let returnValue;
 	let callCount = 0;
-	const functionName = fn.displayName || fn.name || '<anonymous>';
+	const functionName = function_.displayName || function_.name || '<anonymous>';
 
-	const onetime = function (...args) {
+	const onetime = function (...arguments_) {
 		calledFunctions.set(onetime, ++callCount);
 
-		if (isCalled) {
-			if (options.throw === true) {
-				throw new Error(`Function \`${functionName}\` can only be called once`);
-			}
-
-			return ret;
+		if (callCount === 1) {
+			returnValue = function_.apply(this, arguments_);
+			function_ = null;
+		} else if (options.throw === true) {
+			throw new Error(`Function \`${functionName}\` can only be called once`);
 		}
 
-		isCalled = true;
-		ret = fn.apply(this, args);
-		fn = null;
-
-		return ret;
+		return returnValue;
 	};
 
-	mimicFn_1(onetime, fn);
+	mimicFn_1(onetime, function_);
 	calledFunctions.set(onetime, callCount);
 
 	return onetime;
 };
 
-var onetime = oneTime;
+var onetime_1 = onetime;
 // TODO: Remove this for the next major release
-var _default$1 = oneTime;
+var _default$1 = onetime;
 
-var callCount = fn => {
-	if (!calledFunctions.has(fn)) {
-		throw new Error(`The given function \`${fn.name}\` is not wrapped by the \`onetime\` package`);
+var callCount = function_ => {
+	if (!calledFunctions.has(function_)) {
+		throw new Error(`The given function \`${function_.name}\` is not wrapped by the \`onetime\` package`);
 	}
 
-	return calledFunctions.get(fn);
+	return calledFunctions.get(function_);
 };
-onetime.default = _default$1;
-onetime.callCount = callCount;
+onetime_1.default = _default$1;
+onetime_1.callCount = callCount;
 
 var signals = createCommonjsModule(function (module) {
 // This is not the set of all possible signals.
@@ -9856,7 +9846,7 @@ signalExit.unload = unload_1;
 signalExit.signals = signals_1;
 signalExit.load = load_1;
 
-var restoreCursor = onetime(() => {
+var restoreCursor = onetime_1(() => {
 	signalExit(() => {
 		process.stderr.write('\u001B[?25h');
 	}, {alwaysLast: true});
