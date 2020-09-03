@@ -8,7 +8,8 @@ import terminalLink from 'terminal-link';
 import chalk from 'chalk';
 
 async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
-  console.log('\nVerifying files:');
+  const filesNoun = sfvFiles.length === 1 ? 'file' : 'files';
+  console.log(`\nVerifying ${filesNoun}:`);
 
   await Promise.all( sfvFiles.map(async sfvFile => {
     const sfvContents = await readSFV(sfvFile);

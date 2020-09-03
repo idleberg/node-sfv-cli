@@ -12389,11 +12389,13 @@ module.exports.stderr.isSupported = supportsHyperlinks.stderr;
 function compareSFV(sfvFiles, failFast) {
     if (failFast === void 0) { failFast = false; }
     return __awaiter(this, void 0, void 0, function () {
+        var filesNoun;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log('\nVerifying files:');
+                    filesNoun = sfvFiles.length === 1 ? 'file' : 'files';
+                    console.log("\nVerifying " + filesNoun + ":");
                     return [4 /*yield*/, Promise.all(sfvFiles.map(function (sfvFile) { return __awaiter(_this, void 0, void 0, function () {
                             var sfvContents;
                             var _this = this;
