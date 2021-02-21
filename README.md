@@ -21,7 +21,7 @@ You can now use the `sfv` command in your Terminal emulator:
 # Create .sfv
 sfv vlc.exe -o vlc.sfv
 
-# Verify against .sfv
+# Verify .sfv
 sfv vlc.sfv
 ```
 
