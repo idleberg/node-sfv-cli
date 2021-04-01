@@ -13,6 +13,9 @@
   },
   "main": "index.js",
   "typings": "./types",
+  "engines": {
+    "node": ">=10"
+  },
   "bin": {
     "sfv": "./index.js",
     "node-sfv": "./index.js"
@@ -40,27 +43,27 @@
     "ora": "^5.0.0",
     "simple-file-verification": "^1.1.0",
     "terminal-link": "^2.1.1",
-    "update-notifier": "^4.1.1"
+    "update-notifier": "^5.1.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "@rollup/plugin-typescript": "^5.0.2",
+    "@rollup/plugin-typescript": "^8.2.1",
     "@types/node": "^14.6.4",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "ava": "^3.12.1",
     "eslint": "^7.8.1",
     "esm": "^3.2.25",
-    "execa": "^4.0.3",
+    "execa": "^5.0.0",
     "glob": "^7.1.6",
     "hasha": "^5.2.0",
-    "husky": "^4.2.5",
+    "husky": ">=4.3 <5",
     "rimraf": "^3.0.2",
     "rollup": "^2.26.9",
     "rollup-plugin-filesize": "^9.0.2",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "which": "^2.0.2"
   },
   "husky": {
     "hooks": {
