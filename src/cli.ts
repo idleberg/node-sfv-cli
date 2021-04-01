@@ -39,13 +39,14 @@ const lineBreak = program.winsfv
     if (!program.print) printTitle();
 
     const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
+    const otherFiles = files.filter(file => !file.endsWith('.sfv') && !file.endsWith('.sfvx'));
 
     if (sfvFiles.length) {
       await validationMode(files);
     }
 
-    if (files.length > sfvFiles.length) {
-      await creationMode(files);
+    if (otherFiles.length) {
+      await creationMode(otherFiles);
     }
   } else {
     program.help();
