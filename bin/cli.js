@@ -92,8 +92,9 @@ var license = "MIT";
 var scripts = {
 	build: "rollup --config",
 	dev: "npm run start",
-	fix: "eslint --fix ./src",
-	lint: "eslint ./src",
+	"lint:md": "remark . --quiet --frail --ignore-path .gitignore",
+	"lint:ts": "eslint ./src --ignore-path .gitignore",
+	lint: "npm-run-all --parallel lint:*",
 	start: "rollup --watch --config",
 	test: "ava ./test/*.js --verbose"
 };
@@ -140,26 +141,34 @@ var devDependencies = {
 	"@typescript-eslint/parser": "^4.0.1",
 	ava: "^3.12.1",
 	eslint: "^7.8.1",
+	"eslint-plugin-json": "^2.1.2",
 	esm: "^3.2.25",
 	execa: "^5.0.0",
 	glob: "^7.1.6",
 	hasha: "^5.2.0",
 	husky: ">=4.3 <5",
+	jsonlint: "^1.6.3",
+	"lint-staged": "^10.5.4",
+	"npm-run-all": "^4.1.5",
+	prettier: "^2.2.1",
+	"remark-cli": "^9.0.0",
+	"remark-preset-lint-recommended": "^5.0.0",
+	"remark-preset-prettier": "^0.4.1",
 	rimraf: "^3.0.2",
 	rollup: "^2.26.9",
 	"rollup-plugin-filesize": "^9.0.2",
 	typescript: "^4.0.2",
 	which: "^2.0.2"
 };
-var husky = {
-	hooks: {
-		"pre-commit": "npm run lint"
-	}
-};
 var ava = {
 	require: [
 		"esm"
 	]
+};
+var husky = {
+	hooks: {
+		"pre-commit": "npm run lint"
+	}
 };
 var meta = {
 	name: name,
@@ -176,8 +185,13 @@ var meta = {
 	keywords: keywords,
 	dependencies: dependencies,
 	devDependencies: devDependencies,
+	ava: ava,
 	husky: husky,
-	ava: ava
+	"lint-staged": {
+	"*.ts": "eslint --cache --fix",
+	"*.json": "jsonlint --quiet",
+	"*.md": "prettier --write"
+}
 };
 
 function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
