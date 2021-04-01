@@ -3,13 +3,37 @@ import test from 'ava';
 import execa from 'execa';
 import hasha from 'hasha';
 import rimraf from 'rimraf';
+import { promises as fs, constants} from 'fs';
 import { resolve } from 'path';
 import { promisify } from 'util';
+import which from 'which';
 
 const cleanup = promisify(rimraf);
 const CLI_SCRIPT =  resolve(__dirname, '..', 'bin', 'cli.js')
 
+async function fileExists(filePath) {
+  try {
+    await fs.access(filePath, constants.F_OK);
+  } catch (error) {
+    return false;
+  }
+
+  return true;
+}
+
 // Tests
+test('cksfv is installed', async t => {
+
+  const ckSfvPath = await which('cksfv');
+
+  const actual = ckSfvPath && await fileExists(ckSfvPath);
+  const expected = true;
+
+  if (!actual) t.log('Make sure cksfv is installed and in your PATH environment variable');
+
+  t.is(actual, expected);
+});
+
 test('CRC32: Read', async t => {
   const outName = await hasha.async(String(Date.now()))
 
