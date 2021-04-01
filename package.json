@@ -1,6 +1,6 @@
 {
   "name": "sfv-cli",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "CLI tool to verify and create SFV files",
   "license": "MIT",
   "scripts": {
@@ -18,8 +18,8 @@
     "node": ">=10"
   },
   "bin": {
-    "sfv": "./index.js",
-    "node-sfv": "./index.js"
+    "sfv": "index.js",
+    "node-sfv": "index.js"
   },
   "homepage": "https://www.npmjs.com/package/sfv-cli",
   "repository": {
