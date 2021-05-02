@@ -4,6 +4,11 @@ commands:
   run-test:
     steps:
       - checkout
+      - run:
+          name: Installing cksfv
+          command: |
+            sudo apt-get -y update
+            sudo apt-get -y install cksfv
       - restore_cache:
           name: Restore npm Package Data Cache
           keys:
