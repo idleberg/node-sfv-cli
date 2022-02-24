@@ -3,6 +3,7 @@
 [![npm](https://flat.badgen.net/npm/license/sfv-cli)](https://www.npmjs.org/package/sfv-cli)
 [![npm](https://flat.badgen.net/npm/v/sfv-cli)](https://www.npmjs.org/package/sfv-cli)
 [![CI](https://img.shields.io/github/workflow/status/idleberg/node-sfv-cli/CI?style=flat-square)](https://github.com/idleberg/node-sfv-cli/actions)
+
 CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification)). This package also introduces an extended SFV-like file format (`.sfvx`), which supports modern hashing algorithms.
 
 ![Screenshot](https://raw.github.com/idleberg/node-sfv-cli/master/screenshot.png)
@@ -40,6 +41,7 @@ Running `sfv --help` lists all available flags
   -w, --winsfv                 enables WinSFV compatibility (default: false)
   -h, --help                   display help for command
 ```
+
 ## Related
 
 - [node-sfv](https://www.npmjs.com/package/simple-file-verification)
