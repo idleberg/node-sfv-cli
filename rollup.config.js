@@ -1,5 +1,4 @@
 import commonjs from '@rollup/plugin-commonjs';
-import filesize from 'rollup-plugin-filesize';
 import json from '@rollup/plugin-json';
 import typescript from '@rollup/plugin-typescript';
 
@@ -8,17 +7,13 @@ const defaults = {
     'crypto'
   ],
   output: {
-    dir: 'bin',
-    format: 'cjs'
+    file: 'bin/cli.mjs',
+    format: 'esm'
   },
   plugins: [
     commonjs(),
-    filesize(),
     json(),
-    typescript({
-      allowSyntheticDefaultImports: true,
-      moduleResolution: 'node'
-    })
+    typescript()
   ]
 };
 

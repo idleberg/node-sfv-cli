@@ -1,8 +1,8 @@
 import meta from '../package.json';
 
 import { fromFile as checksumFromFile } from 'simple-file-verification';
-import { normalize as normalizePath } from 'path';
-import { promises as fs } from 'fs';
+import { normalize as normalizePath } from 'node:path';
+import { promises as fs } from 'node:fs';
 import ora from 'ora';
 import pc from "picocolors"
 import terminalLink from 'terminal-link';

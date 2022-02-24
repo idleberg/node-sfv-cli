@@ -1,4 +1,6 @@
-import meta from '../package.json';
+import { globby } from 'globby';
+import { promises as fs } from 'node:fs';
+import program from 'commander';
 
 import {
   compareSFV,
@@ -9,12 +11,11 @@ import {
   writeSFV
 } from './util.js';
 
-import globby from 'globby';
-import program from 'commander';
+const { description, version } = JSON.parse(await fs.readFile('./package.json', 'utf8'));
 
 program
-  .version(meta.version)
-  .description(meta.description)
+  .version(version)
+  .description(description)
   .arguments('[options] <file ...>')
   .usage('[options] <file ...>')
   .option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
@@ -32,26 +33,24 @@ const lineBreak = program.winsfv
   ? '\r\n'
   : '\n';
 
-(async () => {
-  const files = await globby(program.args);
+const files = await globby(program.args);
 
-  if (files.length) {
-    if (!program.print) printTitle();
+if (files.length) {
+  if (!program.print) printTitle();
 
-    const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
-    const otherFiles = files.filter(file => !file.endsWith('.sfv') && !file.endsWith('.sfvx'));
+  const sfvFiles = files.filter(file => file.endsWith('.sfv') || file.endsWith('.sfvx'));
+  const otherFiles = files.filter(file => !file.endsWith('.sfv') && !file.endsWith('.sfvx'));
 
-    if (sfvFiles.length) {
-      await validationMode(files);
-    }
-
-    if (otherFiles.length) {
-      await creationMode(otherFiles);
-    }
-  } else {
-    program.help();
+  if (sfvFiles.length) {
+    await validationMode(files);
   }
-})();
+
+  if (otherFiles.length) {
+    await creationMode(otherFiles);
+  }
+} else {
+  program.help();
+}
 
 async function creationMode(files) {
   if (!program.print) console.time(completedIn)
