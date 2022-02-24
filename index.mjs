@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { promises as fs } from 'fs';
+import { promises as fs } from 'node:fs';
 import updateNotifier from 'update-notifier';
 import './bin/cli.mjs';
 

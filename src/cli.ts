@@ -1,5 +1,5 @@
-import { globby } from 'globby';
 import { promises as fs } from 'node:fs';
+import glob from 'globby';
 import program from 'commander';
 
 import {
@@ -33,7 +33,7 @@ const lineBreak = program.winsfv
   ? '\r\n'
   : '\n';
 
-const files = await globby(program.args);
+const files = await glob(program.args);
 
 if (files.length) {
   if (!program.print) printTitle();

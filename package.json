@@ -44,8 +44,8 @@
     "sha512"
   ],
   "dependencies": {
-    "commander": "^6.2.1",
-    "globby": "^13.1.1",
+    "commander": "6",
+    "globby": "11",
     "ora": "^6.1.0",
     "picocolors": "^1.0.0",
     "simple-file-verification": "^1.1.0",
