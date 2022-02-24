@@ -13,6 +13,9 @@ yarn.lock
 .eslintcache
 .stylelintcache
 
+# build
+bin/
+
 # project specific
 *.sfv
 !/test/**/*.sfv
