@@ -42,10 +42,10 @@
     "sha512"
   ],
   "dependencies": {
-    "chalk": "^4.1.2",
     "commander": "^6.2.1",
     "globby": "^11.1.0",
     "ora": "^5.4.1",
+    "picocolors": "^1.0.0",
     "simple-file-verification": "^1.1.0",
     "terminal-link": "^2.1.1",
     "update-notifier": "^5.1.0"

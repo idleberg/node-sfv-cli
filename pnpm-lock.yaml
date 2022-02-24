@@ -8,7 +8,6 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^4.33.0
   '@typescript-eslint/parser': ^4.33.0
   ava: ^3.15.0
-  chalk: ^4.1.2
   commander: ^6.2.1
   eslint: ^7.32.0
   eslint-plugin-json: ^2.1.2
@@ -22,6 +21,7 @@ specifiers:
   lint-staged: ^10.5.4
   npm-run-all: ^4.1.5
   ora: ^5.4.1
+  picocolors: ^1.0.0
   prettier: ^2.5.1
   remark-cli: ^9.0.0
   remark-preset-lint-recommended: ^5.0.0
@@ -37,10 +37,10 @@ specifiers:
   which: ^2.0.2
 
 dependencies:
-  chalk: 4.1.2
   commander: 6.2.1
   globby: 11.1.0
   ora: 5.4.1
+  picocolors: 1.0.0
   simple-file-verification: 1.1.0
   terminal-link: 2.1.1
   update-notifier: 5.1.0
@@ -3270,6 +3270,10 @@ packages:
   /performance-now/2.1.0:
     resolution: {integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=}
     dev: true
+
+  /picocolors/1.0.0:
+    resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+    dev: false
 
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}

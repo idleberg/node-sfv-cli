@@ -1,11 +1,11 @@
 import meta from '../package.json';
 
-import { promises as fs } from 'fs';
-import { normalize as normalizePath } from 'path';
 import { fromFile as checksumFromFile } from 'simple-file-verification';
+import { normalize as normalizePath } from 'path';
+import { promises as fs } from 'fs';
 import ora from 'ora';
+import pc from "picocolors"
 import terminalLink from 'terminal-link';
-import chalk from 'chalk';
 
 async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
   const filesNoun = sfvFiles.length === 1 ? 'file' : 'files';
@@ -25,7 +25,7 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
       try {
          actualChecksum = await checksumFromFile(file, algorithm);
       } catch (e) {
-        spinner.fail(`${file} ${chalk.red(checksum)} ${chalk.dim(e)}`);
+        spinner.fail(`${file} ${pc.red(checksum)} ${pc.dim(e)}`);
 
         if (failFast) {
           throw 'Failing fast'
@@ -35,9 +35,9 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
       }
 
       if (checksum === actualChecksum) {
-        spinner.succeed(`${file} ${chalk.blue(checksum)}`);
+        spinner.succeed(`${file} ${pc.blue(checksum)}`);
       } else {
-        spinner.fail(`${file} ${chalk.red(checksum)} (actual: ${chalk.blue(actualChecksum)})`);
+        spinner.fail(`${file} ${pc.red(checksum)} (actual: ${pc.blue(actualChecksum)})`);
 
         if (failFast) throw 'Failing fast';
       }
@@ -88,13 +88,13 @@ async function calculateChecksum(files: string[], options: FlagOptions): Promise
 
     try {
       checksum = await checksumFromFile(file, slugify(options.algorithm));
-      if (!options.print) spinner.succeed(`${file} ${chalk.blue(checksum)}`);
+      if (!options.print) spinner.succeed(`${file} ${pc.blue(checksum)}`);
     } catch (e) {
       if (options.failFast) {
-        spinner.fail(`${file} ${chalk.dim(e)}`)
+        spinner.fail(`${file} ${pc.dim(e)}`)
         softThrow('Failing fast to error', true);
       }
-      if (!options.print) spinner.fail(`${file} ${chalk.dim(e)}`);
+      if (!options.print) spinner.fail(`${file} ${pc.dim(e)}`);
     }
 
     return file && checksum
@@ -238,7 +238,7 @@ async function writeSFV(fileName: string, fileContents: string, options: FlagOpt
     await fs.writeFile(outputFile, fileContents);
     if (!options.print) spinner.succeed(outputFile);
   } catch (e) {
-    if (!options.print) spinner.fail(`${outputFile} ${chalk.dim(e)}`);
+    if (!options.print) spinner.fail(`${outputFile} ${pc.dim(e)}`);
   }
 }
 
