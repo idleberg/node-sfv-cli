@@ -86,7 +86,7 @@ function __generator$1(thisArg, body) {
 }
 
 var name = "sfv-cli";
-var version = "0.8.1";
+var version = "0.8.2";
 var description = "CLI tool to verify and create SFV files";
 var license = "MIT";
 var scripts = {
@@ -104,8 +104,8 @@ var engines = {
 	node: ">=10"
 };
 var bin = {
-	sfv: "./index.js",
-	"node-sfv": "./index.js"
+	sfv: "index.js",
+	"node-sfv": "index.js"
 };
 var homepage = "https://www.npmjs.com/package/sfv-cli";
 var repository = {
@@ -157,6 +157,7 @@ var devDependencies = {
 	rimraf: "^3.0.2",
 	rollup: "^2.26.9",
 	"rollup-plugin-filesize": "^9.0.2",
+	tslib: "^2.2.0",
 	typescript: "^4.0.2",
 	which: "^2.0.2"
 };
