@@ -19,8 +19,8 @@
     "README.md"
   ],
   "bin": {
-    "sfv": "index.js",
-    "node-sfv": "index.js"
+    "sfv": "index.mjs",
+    "node-sfv": "index.mjs"
   },
   "type": "module",
   "typings": "./types",
