@@ -8,7 +8,8 @@ const defaults = {
   ],
   output: {
     file: 'bin/cli.mjs',
-    format: 'esm'
+    format: 'esm',
+    sourcemap: true
   },
   plugins: [
     commonjs(),
