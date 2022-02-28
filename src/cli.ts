@@ -13,8 +13,8 @@ import {
   writeSFV
 } from './util.js';
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const { description, version } = JSON.parse(
   await fs.readFile(resolve(__dirname, '../package.json'), 'utf8')
