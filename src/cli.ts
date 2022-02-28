@@ -1,3 +1,5 @@
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs';
 import glob from 'globby';
 import program from 'commander';
@@ -11,7 +13,12 @@ import {
   writeSFV
 } from './util.js';
 
-const { description, version } = JSON.parse(await fs.readFile('./package.json', 'utf8'));
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const { description, version } = JSON.parse(
+  await fs.readFile(resolve(__dirname, '../package.json'), 'utf8')
+);
 
 program
   .version(version)
