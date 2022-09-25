@@ -46,6 +46,17 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
 }
 
 function detectHash(algorithm: string): string {
+	if (algorithm.includes(':')) {
+		const prefix = algorithm.split(':').at(0);
+
+		if (isSupportedAlgorithm(prefix)) {
+			return prefix;
+		}
+
+		throw Error('Unsupported hashing algorithm');
+	}
+
+	// Legacy format
   switch (algorithm.length) {
     case 8:
       return 'crc32';
