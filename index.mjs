@@ -5,10 +5,10 @@ import updateNotifier from 'update-notifier';
 import './bin/cli.mjs';
 
 (async () => {
-  const pkg = await fs.readFile('./package.json', 'utf8');
+	const pkg = await fs.readFile('./package.json', 'utf8');
 
-  updateNotifier({
-    pkg
-  }).notify();
+	updateNotifier({
+		pkg
+	}).notify();
 });
 
