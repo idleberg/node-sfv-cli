@@ -17,6 +17,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Installing cksfv
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install cksfv
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
