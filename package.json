@@ -4,13 +4,13 @@
   "description": "CLI tool to verify and create SFV files",
   "license": "MIT",
   "scripts": {
-    "build": "rollup --config",
-    "dev": "npm run start",
+    "build": "tsup",
+    "dev": "npm run build -- --watch",
     "lint:md": "remark . --quiet --frail --ignore-path .gitignore",
     "lint:ts": "eslint ./src --ignore-path .gitignore",
     "lint": "npm-run-all --parallel lint:*",
     "prepack": "npm run build",
-    "start": "rollup --watch --config",
+    "start": "npm run dev",
     "test": "ava ./test/*.mjs --verbose"
   },
   "files": [
@@ -23,9 +23,9 @@
     "node-sfv": "index.mjs"
   },
   "type": "module",
-  "typings": "./types",
+  "typings": "./bin/cli.d.ts",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=18.0.0"
   },
   "homepage": "https://www.npmjs.com/package/sfv-cli",
   "repository": {
@@ -45,37 +45,34 @@
   ],
   "dependencies": {
     "commander": "^6.2.1",
-    "globby": "^13.1.2",
-    "ora": "^6.1.2",
+    "globby": "^14.0.0",
+    "ora": "^8.0.1",
     "picocolors": "^1.0.0",
-    "simple-file-verification": "^2.0.1",
+    "simple-file-verification": "^3.0.0",
     "terminal-link": "^3.0.0",
-    "update-notifier": "^6.0.1"
+    "update-notifier": "^7.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.2",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-typescript": "^8.5.0",
     "@types/node": "^16.11.60",
-    "@typescript-eslint/eslint-plugin": "^5.38.0",
-    "@typescript-eslint/parser": "^5.38.0",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
     "ava": "^4.3.3",
-    "eslint": "^8.24.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-json": "^3.1.0",
-    "execa": "^6.1.0",
-    "hasha": "^5.2.2",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "npm-run-all2": "^6.0.2",
-    "prettier": "^2.7.1",
-    "remark-cli": "^11.0.0",
-    "remark-preset-lint-recommended": "^6.1.2",
+    "execa": "^8.0.1",
+    "hasha": "^6.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "npm-run-all2": "^6.1.1",
+    "prettier": "^3.1.1",
+    "remark-cli": "^12.0.0",
+    "remark-preset-lint-recommended": "^6.1.3",
     "remark-preset-prettier": "^2.0.1",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.79.1",
-    "tslib": "^2.4.0",
-    "typescript": "^4.8.3",
-    "which": "^2.0.2"
+    "rimraf": "^5.0.5",
+    "tslib": "^2.6.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "which": "^4.0.0"
   },
   "lint-staged": {
     "*.(json|ts)": "eslint --cache --fix",

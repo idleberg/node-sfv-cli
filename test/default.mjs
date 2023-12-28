@@ -1,17 +1,12 @@
-// Dependencies
-import { dirname, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { execa } from 'execa';
 import { promises as fs, constants} from 'node:fs';
-import { promisify } from 'node:util';
-import hasha from 'hasha';
-import rimraf from 'rimraf';
+import { hash } from 'hasha';
+import { rimraf } from 'rimraf';
 import test from 'ava';
 import which from 'which';
 
-const __dirname = resolve(dirname(''));
-
-const cleanup = promisify(rimraf);
-const CLI_SCRIPT = resolve(__dirname, 'bin/cli.mjs')
+const CLI_SCRIPT = resolve(process.cwd(), 'bin/cli.js')
 
 async function fileExists(filePath) {
 	try {
@@ -31,17 +26,19 @@ test('cksfv is installed', async t => {
 	const actual = ckSfvPath && await fileExists(ckSfvPath);
 	const expected = true;
 
-	if (!actual) t.log('Make sure cksfv is installed and in your PATH environment variable');
+	if (!actual) {
+		t.log('Make sure cksfv is installed and in your PATH environment variable');
+	}
 
 	t.is(actual, expected);
 });
 
 test('CRC32: Read', async t => {
-	const outName = await hasha.async(String(Date.now()))
+	const outName = await hash(String(Date.now()))
 
 	await execa('node', [CLI_SCRIPT, 'screenshot.png', '-o', `${outName}.sfv`]);
 	const ckSFV = (await execa('cksfv', ['-g', `${outName}.sfv`]));
-	await cleanup(`${outName}.sfv`);
+	await rimraf(`${outName}.sfv`);
 
 	const actual = ckSFV.exitCode;
 	const expected = 0;
