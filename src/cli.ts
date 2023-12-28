@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs';
-import { globby } from 'globby';
+import { glob } from 'glob';
 import program from 'commander';
 
 import {
@@ -40,7 +40,7 @@ const lineBreak = program.winsfv
 	? '\r\n'
 	: '\n';
 
-const files = await globby(program.args);
+const files = await glob(program.args);
 
 if (files.length) {
 	if (!program.print) printTitle();

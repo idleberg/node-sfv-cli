@@ -46,7 +46,7 @@
   ],
   "dependencies": {
     "commander": "^6.2.1",
-    "globby": "^14.0.0",
+    "glob": "^10.3.10",
     "ora": "^8.0.1",
     "picocolors": "^1.0.0",
     "simple-file-verification": "^3.0.1",
