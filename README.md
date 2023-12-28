@@ -1,8 +1,8 @@
 # sfv-cli
 
-[![npm](https://flat.badgen.net/npm/license/sfv-cli)](https://www.npmjs.org/package/sfv-cli)
-[![npm](https://flat.badgen.net/npm/v/sfv-cli)](https://www.npmjs.org/package/sfv-cli)
-[![CI](https://img.shields.io/github/actions/workflow/status/idleberg/node-sfv-cli/default.yml?style=flat-square)](https://github.com/idleberg/node-sfv-cli/actions)
+[![License](https://img.shields.io/github/license/idleberg/node-sfv-cli?color=blue&style=for-the-badge)](https://github.com/idleberg/node-sfv-cli/blob/main/LICENSE)
+[![Version](https://img.shields.io/npm/v/sfv-cli?style=for-the-badge)](https://www.npmjs.org/package/sfv-cli)
+[![Build](https://img.shields.io/github/actions/workflow/status/idleberg/node-sfv-cli/default.yml?style=for-the-badge)](https://github.com/idleberg/node-sfv-cli/actions)
 
 CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification)). This package also introduces an extended SFV-like file format (`.sfvx`), which supports modern hashing algorithms.
 
