@@ -49,12 +49,12 @@
     "globby": "^14.0.0",
     "ora": "^8.0.1",
     "picocolors": "^1.0.0",
-    "simple-file-verification": "^3.0.0",
+    "simple-file-verification": "^3.0.1",
     "terminal-link": "^3.0.0",
     "update-notifier": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "^16.11.60",
+    "@types/node": "^18.19.3",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
     "ava": "^4.3.3",

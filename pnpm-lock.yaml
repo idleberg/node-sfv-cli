@@ -18,8 +18,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.0
   simple-file-verification:
-    specifier: ^3.0.0
-    version: 3.0.0
+    specifier: ^3.0.1
+    version: 3.0.1
   terminal-link:
     specifier: ^3.0.0
     version: 3.0.0
@@ -29,8 +29,8 @@ dependencies:
 
 devDependencies:
   '@types/node':
-    specifier: ^16.11.60
-    version: 16.11.60
+    specifier: ^18.19.3
+    version: 18.19.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.16.0
     version: 6.16.0(@typescript-eslint/parser@6.16.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -678,6 +678,12 @@ packages:
 
   /@types/node@16.11.60:
     resolution: {integrity: sha512-kYIYa1D1L+HDv5M5RXQeEu1o0FKA6yedZIoyugm/MBPROkLpX4L7HRxMrPVyo8bnvjpW/wDlqFNGzXNMb7AdRw==}
+    dev: true
+
+  /@types/node@18.19.3:
+    resolution: {integrity: sha512-k5fggr14DwAytoA/t8rPrIz++lXK7/DqckthCmoZOKNsEbJkId4Z//BqgApXBUGrGddrigYa1oqheo/7YmW4rg==}
+    dependencies:
+      undici-types: 5.26.5
     dev: true
 
   /@types/node@20.10.5:
@@ -3883,8 +3889,8 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
-  /simple-file-verification@3.0.0:
-    resolution: {integrity: sha512-OeEXit1nPceu2ePqVxw2KbdjU79F7ATQBvT0aMWKVSTjpFz5Zsjq/Q7Fm3D9FL5smKJXzJUvjJUP8o8LLHAKqg==}
+  /simple-file-verification@3.0.1:
+    resolution: {integrity: sha512-tKPbx+YpestsnRKYim2JhZUsl5YKDzhravQQYfYFnEEHItLt4YnT5m6NUr5+8w7e/S2CUL3DEqKxy1p5Ta18Eg==}
     engines: {node: '>=18.0.0'}
     dependencies:
       cyclic-32: 1.2.0
