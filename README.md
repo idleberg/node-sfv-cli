@@ -10,7 +10,7 @@ CLI tool to verify and create SFV files (see [Simple File Verification](https://
 
 ## Installation
 
-`yarn global add sfv-cli || npm install --global sfv-cli`
+`$ npm install --global sfv-cli`
 
 ## Usage
 
@@ -18,10 +18,10 @@ You can now use the `sfv` command in your Terminal emulator:
 
 ```sh
 # Create .sfv
-sfv vlc.exe -o vlc.sfv
+$ sfv vlc.exe -o vlc.sfv
 
 # Verify .sfv
-sfv vlc.sfv
+$ sfv vlc.sfv
 ```
 
 **Note:** You can also use `node-sfv` to avoid naming conflicts
