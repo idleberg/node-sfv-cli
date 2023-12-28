@@ -12,6 +12,10 @@ CLI tool to verify and create SFV files (see [Simple File Verification](https://
 
 `$ npm install --global sfv-cli`
 
+For single-time use, you can try `npx`:
+
+`$ npx sfv-cli vlc.sfv`
+
 ## Usage
 
 You can now use the `sfv` command in your Terminal emulator:
