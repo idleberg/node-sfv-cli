@@ -18,6 +18,8 @@ async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
 			const spinner = ora(file).start();
 			let actualChecksum;
 
+			checksum = checksum.toUpperCase()
+
 			const algorithm = sfvFile.endsWith('.sfvx')
 				? detectHash(checksum)
 				: 'crc32';
