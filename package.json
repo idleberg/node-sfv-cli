@@ -16,7 +16,7 @@
   "files": [
     "bin/",
     "types/",
-		"index.mjs",
+    "index.mjs",
     "LICENSE",
     "README.md"
   ],
@@ -50,6 +50,7 @@
     "glob": "^10.3.10",
     "ora": "^8.0.1",
     "picocolors": "^1.0.0",
+    "sfv-cli": "link:",
     "simple-file-verification": "^3.0.1",
     "terminal-link": "^3.0.0",
     "update-notifier": "^7.0.0"
