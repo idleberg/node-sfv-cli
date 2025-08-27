@@ -7,16 +7,20 @@ on:
     - 'tests/**'
     - 'types/**'
     - 'src/**'
+    - 'biome.jsonc'
     - 'package.json'
     - 'pnpm-lock.yaml'
+    - 'tsdown.config.ts'
   pull_request:
       paths:
       - '.github/workflows/default.yml'
       - 'tests/**'
       - 'types/**'
       - 'src/**'
+      - 'biome.jsonc'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'tsdown.config.ts'
   workflow_dispatch:
 
 jobs:
