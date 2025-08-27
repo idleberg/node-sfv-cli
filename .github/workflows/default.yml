@@ -1,61 +1,65 @@
-name: CI
+name: 'CI: NodeJS'
 
 on:
-- push
-- pull_request
+  push:
+    paths:
+    - '.github/workflows/ci-node.yml'
+    - 'tests/**'
+    - 'types/**'
+    - 'src/**'
+    - 'package.json'
+    - 'pnpm-lock.yaml'
+  pull_request:
+      paths:
+      - '.github/workflows/ci-node.yml'
+      - 'tests/**'
+      - 'types/**'
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  workflow_dispatch:
 
 jobs:
   default:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: ['lts/*', 'latest']
-        os: [ubuntu-latest]
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 10
 
-      - name: Installing cksfv
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install cksfv
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
 
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+    - name: Enable Corepack
+      run: corepack enable
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      run: |
+        echo "::set-output name=pnpm_store_path::$(pnpm store path)"
 
-      - name: Enable Corepack
-        run: |
-          npm install --global corepack@latest
-          corepack enable
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.pnpm_store_path }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_store_path::$(pnpm store path)"
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile --strict-peer-dependencies
 
-      - uses: actions/cache@v4
-        name: Set up pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_store_path }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+    - name: Lint Source
+      run: pnpm exec biome ci
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --strict-peer-dependencies
+    - name: Build Source
+      run: pnpm run --if-present build
 
-      - name: Lint Source
-        run: pnpm run --if-present lint
-
-      - name: Build Source
-        run: pnpm run --if-present build
-
-      - name: Run Tests
-        run: pnpm run --if-present test
+    - name: Run Tests
+      run: pnpm run --if-present test
