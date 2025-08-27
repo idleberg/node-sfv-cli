@@ -4,11 +4,9 @@
   "description": "CLI tool to verify and create SFV files",
   "license": "MIT",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "dev": "npm run build -- --watch",
-    "lint:md": "remark . --quiet --frail --ignore-path .gitignore",
-    "lint:ts": "eslint ./src --ignore-path .gitignore",
-    "lint": "npm-run-all --parallel lint:*",
+    "lint": "biome check --no-errors-on-unmatched --vcs-enabled=true --vcs-use-ignore-file=true",
     "prepack": "npm run build",
     "start": "npm run dev",
     "test": "uvu tests"
@@ -56,6 +54,7 @@
     "update-notifier": "^7.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.2.2",
     "@types/node": "^18.19.3",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
@@ -63,23 +62,16 @@
     "eslint-plugin-json": "^3.1.0",
     "execa": "^8.0.1",
     "hasha": "^6.0.0",
-    "husky": "^8.0.3",
+    "lefthook": "^1.12.3",
     "lint-staged": "^15.2.0",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.1.1",
-    "remark-cli": "^12.0.0",
-    "remark-preset-lint-recommended": "^6.1.3",
-    "remark-preset-prettier": "^2.0.1",
     "rimraf": "^5.0.5",
+    "tsdown": "^0.14.2",
     "tslib": "^2.6.2",
-    "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "uvu": "^0.5.6",
     "which": "^4.0.0"
-  },
-  "lint-staged": {
-    "*.(json|ts)": "eslint --cache --fix",
-    "*.md": "prettier --write"
   },
   "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }
