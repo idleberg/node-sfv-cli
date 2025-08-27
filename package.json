@@ -1,77 +1,78 @@
 {
-  "name": "sfv-cli",
-  "version": "0.11.2",
-  "description": "CLI tool to verify and create SFV files",
-  "license": "MIT",
-  "scripts": {
-    "build": "tsdown",
-    "dev": "npm run build -- --watch",
-    "lint": "biome check --no-errors-on-unmatched --vcs-enabled=true --vcs-use-ignore-file=true",
-    "prepack": "npm run build",
-    "start": "npm run dev",
-    "test": "uvu tests"
-  },
-  "files": [
-    "bin/",
-    "types/",
-    "index.mjs",
-    "LICENSE",
-    "README.md"
-  ],
-  "bin": {
-    "sfv": "index.mjs",
-    "node-sfv": "index.mjs"
-  },
-  "type": "module",
-  "typings": "./bin/cli.d.ts",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "homepage": "https://www.npmjs.com/package/sfv-cli",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/idleberg/node-sfv-cli.git"
-  },
-  "keywords": [
-    "simple file verification",
-    "sfv",
-    "sfvx",
-    "crc",
-    "crc32",
-    "md5",
-    "sha1",
-    "sha256",
-    "sha512"
-  ],
-  "dependencies": {
-    "commander": "^6.2.1",
-    "glob": "^10.3.10",
-    "ora": "^8.0.1",
-    "picocolors": "^1.0.0",
-    "sfv-cli": "link:",
-    "simple-file-verification": "^3.0.1",
-    "terminal-link": "^3.0.0",
-    "update-notifier": "^7.0.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.2.2",
-    "@types/node": "^18.19.3",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-json": "^3.1.0",
-    "execa": "^8.0.1",
-    "hasha": "^6.0.0",
-    "lefthook": "^1.12.3",
-    "lint-staged": "^15.2.0",
-    "npm-run-all2": "^6.1.1",
-    "prettier": "^3.1.1",
-    "rimraf": "^5.0.5",
-    "tsdown": "^0.14.2",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3",
-    "uvu": "^0.5.6",
-    "which": "^4.0.0"
-  },
-  "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
+	"name": "sfv-cli",
+	"version": "0.11.2",
+	"description": "CLI tool to verify and create SFV files",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsdown",
+		"dev": "npm run build -- --watch",
+		"lint": "biome check --no-errors-on-unmatched --vcs-enabled=true --vcs-use-ignore-file=true",
+		"prepack": "npm run build",
+		"start": "npm run dev",
+		"test": "uvu tests"
+	},
+	"files": [
+		"bin/",
+		"types/",
+		"index.mjs",
+		"LICENSE",
+		"README.md"
+	],
+	"bin": {
+		"sfv": "index.mjs",
+		"node-sfv": "index.mjs"
+	},
+	"type": "module",
+	"typings": "./bin/cli.d.ts",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"homepage": "https://www.npmjs.com/package/sfv-cli",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/idleberg/node-sfv-cli.git"
+	},
+	"keywords": [
+		"simple file verification",
+		"sfv",
+		"sfvx",
+		"crc",
+		"crc32",
+		"md5",
+		"sha1",
+		"sha256",
+		"sha512"
+	],
+	"dependencies": {
+		"commander": "^6.2.1",
+		"glob": "^10.3.10",
+		"ora": "^8.0.1",
+		"picocolors": "^1.0.0",
+		"sfv-cli": "link:",
+		"simple-file-verification": "^3.0.1",
+		"terminal-link": "^3.0.0",
+		"update-notifier": "^7.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.2.2",
+		"@total-typescript/tsconfig": "^1.0.4",
+		"@types/node": "^18.19.3",
+		"@typescript-eslint/eslint-plugin": "^6.16.0",
+		"@typescript-eslint/parser": "^6.16.0",
+		"eslint": "^8.56.0",
+		"eslint-plugin-json": "^3.1.0",
+		"execa": "^8.0.1",
+		"hasha": "^6.0.0",
+		"lefthook": "^1.12.3",
+		"lint-staged": "^15.2.0",
+		"npm-run-all2": "^6.1.1",
+		"prettier": "^3.1.1",
+		"rimraf": "^5.0.5",
+		"tsdown": "^0.14.2",
+		"tslib": "^2.6.2",
+		"typescript": "^5.3.3",
+		"uvu": "^0.5.6",
+		"which": "^4.0.0"
+	},
+	"packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }
