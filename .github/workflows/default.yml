@@ -3,7 +3,7 @@ name: 'CI: NodeJS'
 on:
   push:
     paths:
-    - '.github/workflows/ci-node.yml'
+    - '.github/workflows/default.yml'
     - 'tests/**'
     - 'types/**'
     - 'src/**'
@@ -11,7 +11,7 @@ on:
     - 'pnpm-lock.yaml'
   pull_request:
       paths:
-      - '.github/workflows/ci-node.yml'
+      - '.github/workflows/default.yml'
       - 'tests/**'
       - 'types/**'
       - 'src/**'
