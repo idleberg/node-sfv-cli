@@ -32,6 +32,11 @@ jobs:
         node-version: ['lts/*', 'latest']
 
     steps:
+    - name: Installing cksfv
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install cksfv
+
     - uses: actions/checkout@v5
       with:
         fetch-depth: 10
