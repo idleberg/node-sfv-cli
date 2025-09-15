@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "tsdown",
 		"dev": "npm run build -- --watch",
-		"lint": "biome check --no-errors-on-unmatched --vcs-enabled=true --vcs-use-ignore-file=true",
+		"lint": "biome check",
 		"prepack": "npm run build",
 		"start": "npm run dev",
 		"test": "uvu tests"
@@ -58,6 +58,7 @@
 		"@idleberg/configs": "^0.2.0",
 		"@total-typescript/tsconfig": "^1.0.4",
 		"@types/node": "^18.19.125",
+		"@types/which": "^3.0.4",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"eslint": "^8.57.1",
