@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import program from 'commander';
 import { glob } from 'glob';
-
+import type { FlagOptions } from '../types/index.js';
 import { calculateChecksum, compareSFV, printTitle, setComment, softThrow, writeSFV } from './util.js';
 
 const __filename = fileURLToPath(import.meta.url);

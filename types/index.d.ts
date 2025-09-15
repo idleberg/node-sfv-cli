@@ -1,9 +1,10 @@
 declare module '*.json' {
+	// biome-ignore lint/suspicious/noExplicitAny: Not in the domain of this package
 	const value: any;
 	export default value;
 }
 
-interface FlagOptions {
+export interface FlagOptions {
 	algorithm?: string;
 	comment?: string;
 	failFast?: boolean;
@@ -14,7 +15,7 @@ interface FlagOptions {
 	winsfv?: boolean;
 }
 
-interface DateObject {
+export interface DateObject {
 	year: string;
 	month: string;
 	day: string;
@@ -23,7 +24,7 @@ interface DateObject {
 	seconds: string;
 }
 
-interface SFVObject {
+export interface SFVObject {
 	checksum: string;
 	file: string;
 }

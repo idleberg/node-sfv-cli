@@ -5,6 +5,7 @@ import pc from 'picocolors';
 import { fromFile as checksumFromFile } from 'simple-file-verification';
 import terminalLink from 'terminal-link';
 import meta from '../package.json';
+import type { DateObject, FlagOptions, SFVObject } from '../types/index.js';
 
 async function compareSFV(sfvFiles: string[], failFast = false): Promise<void> {
 	const filesNoun = sfvFiles.length === 1 ? 'file' : 'files';
