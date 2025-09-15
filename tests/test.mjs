@@ -12,7 +12,7 @@ const CLI_SCRIPT = resolve(process.cwd(), 'bin/cli.js');
 async function fileExists(filePath) {
 	try {
 		await fs.access(filePath, constants.F_OK);
-	} catch (error) {
+	} catch {
 		return false;
 	}
 

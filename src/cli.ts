@@ -48,7 +48,7 @@ if (files.length) {
 	program.help();
 }
 
-async function creationMode(files) {
+async function creationMode(files: string[]) {
 	if (!program.print) console.time(completedIn);
 
 	if (program.algorithm && program.winsfv) softThrow("The algorithm and WinSFV flags can't be combined", true);
@@ -88,12 +88,12 @@ async function creationMode(files) {
 	}
 }
 
-async function validationMode(files) {
+async function validationMode(files: string[]) {
 	if (!program.print) console.time(completedIn);
 
 	try {
 		await compareSFV(files, program.failFast);
-	} catch (_e) {
+	} catch {
 		softThrow('Failing fast due to mismatch');
 	}
 
