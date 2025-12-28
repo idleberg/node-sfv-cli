@@ -1,5 +1,5 @@
 import { access, constants, writeFile } from 'node:fs/promises';
-import { normalize as normalizePath } from 'node:path';
+import { dirname, normalize as normalizePath, relative } from 'node:path';
 import { logger } from './log.ts';
 import type { SFVObject } from './types.js';
 
@@ -27,7 +27,7 @@ export async function getVersion(): Promise<string> {
 	return module.default.version ?? 'development';
 }
 
-export function parseSFV(input: string): SFVObject[] {
+export function parseSFV(fileName: string, input: string): SFVObject[] {
 	const lines = input.split('\n');
 	const sfvArray = [] as SFVObject[];
 
@@ -36,7 +36,7 @@ export function parseSFV(input: string): SFVObject[] {
 
 		if (file && checksum) {
 			sfvArray.push({
-				file: normalizePath(file.trim()),
+				file: relative(dirname(fileName), normalizePath(file.trim())),
 				checksum,
 			});
 		}

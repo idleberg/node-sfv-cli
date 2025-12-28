@@ -16,13 +16,12 @@ const piscina = new Piscina({
 export async function calculateChecksums(files: SFVObject[]): Promise<SFVObject[]> {
 	const checksums: Array<{ file: string; checksum: string }> = [];
 
-	// TODO differentiate between create/verify (cwd vs dirname of .sfv file)
 	const normalizedFiles = Array.from(
 		new Set(
 			files.map(({ checksum, file }) => {
 				return {
-					file: normalize(relative(process.cwd(), file)),
-					checksum: checksum,
+					file,
+					checksum,
 				};
 			}),
 		),
@@ -56,8 +55,8 @@ export async function verify(sfvFiles: string[]) {
 	for (const sfvFile of sfvFiles) {
 		logger.log(`\nVerifying checksums in "${sfvFile}":`);
 
-		const sfv = await readFile(sfvFile, 'utf-8');
-		const parsed = parseSFV(sfv);
+		const fileContents = await readFile(sfvFile, 'utf-8');
+		const parsed = parseSFV(sfvFile, fileContents);
 
 		if (Object.keys(parsed).length === 0) {
 			logger.error('File is empty');
