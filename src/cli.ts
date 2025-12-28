@@ -1,4 +1,4 @@
-import { Command, type OptionValues } from 'commander';
+import { Command } from 'commander';
 import { logger } from './log.ts';
 import { getVersion } from './utils.ts';
 
