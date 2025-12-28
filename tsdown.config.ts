@@ -7,8 +7,16 @@ export default defineConfig((options) => {
 		target: 'node20',
 		clean: isProduction,
 		dts: isProduction,
-		entry: ['src/cli.ts'],
-		format: 'esm',
+		define: {
+			'import.meta.WORKER_URL': JSON.stringify('./worker.mjs'),
+		},
+		entry: ['src/index.ts', 'src/worker.ts'],
+		external: [
+			// ensure we always read the current version from the manifests
+			'../deno.json',
+			'../package.json',
+		],
+		format: ['esm'],
 		minify: isProduction,
 		outDir: 'bin',
 	};
