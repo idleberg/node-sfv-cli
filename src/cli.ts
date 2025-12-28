@@ -1,101 +1,33 @@
-import { promises as fs } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import program from 'commander';
-import { glob } from 'glob';
-import type { FlagOptions } from '../types/index.js';
-import { calculateChecksum, compareSFV, printTitle, setComment, softThrow, writeSFV } from './util.js';
+import { Command, type OptionValues } from 'commander';
+import { logger } from './log.ts';
+import { getVersion } from './utils.ts';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/**
+ * Handles parsing of CLI arguments.
+ * @internal
+ */
+export async function handleCli() {
+	const program = new Command('node-sfv');
 
-const { description, version } = JSON.parse(await fs.readFile(resolve(__dirname, '../package.json'), 'utf8'));
+	program
+		.version(await getVersion())
+		.configureOutput({
+			writeOut: (message: string) => logger.log(message),
+			writeErr: (message: string) => logger.error(message),
+		})
+		.argument('<file...>', 'files to hash')
+		.option('-o, --outfile <file>', 'writes SFV file', false)
+		.option('-w, --winsfv', 'enables WinSFV compatibility', false);
 
-program
-	.version(version)
-	.description(description)
-	.arguments('[options] <file ...>')
-	.usage('[options] <file ...>')
-	.option('-a, --algorithm [algorithm]', 'specifies hashing algorithm')
-	.option('-c, --comment <string>', 'adds custom comment to output')
-	.option('-F, --fail-fast', 'stops execution after first error', false)
-	.option('-f, --format', 'aligns checksums', false)
-	.option('-o, --output <file>', 'specifies output file')
-	.option('-p, --print', 'prints SFV file to stdout', false)
-	.option('-s, --sort', 'sorts output', false)
-	.option('-w, --winsfv', 'enables WinSFV compatibility', false)
-	.parse(process.argv);
+	program.parse();
 
-const completedIn = '\n✨ Completed in';
-const lineBreak = program.winsfv ? '\r\n' : '\n';
+	const args = program.args;
+	const options = program.opts();
 
-const files = await glob(program.args);
+	logger.debug({ args, options });
 
-if (files.length) {
-	if (!program.print) printTitle();
-
-	const sfvFiles = files.filter((file) => file.endsWith('.sfv') || file.endsWith('.sfvx'));
-	const otherFiles = files.filter((file) => !file.endsWith('.sfv') && !file.endsWith('.sfvx'));
-
-	if (sfvFiles.length) {
-		await validationMode(files);
-	}
-
-	if (otherFiles.length) {
-		await creationMode(otherFiles);
-	}
-} else {
-	program.help();
-}
-
-async function creationMode(files: string[]) {
-	if (!program.print) console.time(completedIn);
-
-	if (program.algorithm && program.winsfv) softThrow("The algorithm and WinSFV flags can't be combined", true);
-	if (program.comment && program.winsfv) softThrow("The comment and WinSFV flags can't be combined", true);
-
-	const algorithm = program.algorithm ? program.algorithm : 'crc32';
-
-	const options = {
-		algorithm: algorithm === true ? 'sha1' : algorithm || 'crc32',
-		comment: program.comment || '',
-		failFast: program.failFast,
-		format: program.format,
-		print: program.print,
+	return {
+		args,
+		options,
 	};
-
-	const sfvFile = (await calculateChecksum(files, options)).filter((item) => item);
-
-	if (!sfvFile.length) softThrow('Aborting, empty SFV file', true);
-
-	sfvFile.unshift(setComment({ comment: program.comment, winsfv: program.winsfv }));
-
-	const outputString = program.sort ? sfvFile.sort().join(lineBreak) : sfvFile.join(lineBreak);
-
-	if (program.output) {
-		const writeOptions: FlagOptions = {
-			algorithm,
-			print: program.print,
-		};
-
-		await writeSFV(program.output, outputString, writeOptions);
-	}
-
-	if (!program.print) {
-		console.timeEnd(completedIn);
-	} else {
-		console.log(outputString);
-	}
-}
-
-async function validationMode(files: string[]) {
-	if (!program.print) console.time(completedIn);
-
-	try {
-		await compareSFV(files, program.failFast);
-	} catch {
-		softThrow('Failing fast due to mismatch');
-	}
-
-	return console.timeEnd(completedIn);
 }
