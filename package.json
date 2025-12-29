@@ -37,11 +37,7 @@
 		"simple file verification",
 		"sfv",
 		"crc",
-		"crc32",
-		"md5",
-		"sha1",
-		"sha256",
-		"sha512"
+		"crc32"
 	],
 	"dependencies": {
 		"commander": "^14.0.2",
