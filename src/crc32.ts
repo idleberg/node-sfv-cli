@@ -5,7 +5,7 @@ import { Listr } from 'listr2';
 import { Piscina } from 'piscina';
 import { logger } from './log.ts';
 import type { SFVObject } from './types.js';
-import { parseSFV } from './utils.ts';
+import { fileExists, parseSFV } from './utils.ts';
 
 const WORKER_URL = import.meta.WORKER_URL || './worker.ts';
 
@@ -54,6 +54,11 @@ export async function calculateChecksums(files: SFVObject[]): Promise<SFVObject[
 export async function verify(sfvFiles: string[]) {
 	for (const sfvFile of sfvFiles) {
 		logger.log(`\nVerifying checksums in "${sfvFile}":`);
+
+		if (!(await fileExists(sfvFile))) {
+			logger.error('File not found');
+			continue;
+		}
 
 		const fileContents = await readFile(sfvFile, 'utf-8');
 		const parsed = parseSFV(sfvFile, fileContents);
