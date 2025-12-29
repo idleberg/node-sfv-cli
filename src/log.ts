@@ -11,8 +11,6 @@ export const logger = {
 			console.log();
 			console.debug(bgCyan(' DEBUG '), ...args);
 			console.log();
-		} else {
-			return undefined;
 		}
 	},
 	error: (...args: unknown[]) => console.error(logSymbols.error, ...args),
