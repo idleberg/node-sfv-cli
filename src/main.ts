@@ -10,7 +10,7 @@ async function main() {
 	const startTime = performance.now();
 
 	const version = await getVersion();
-	logger.log(`sfv-cli v${version}`);
+	logger.log(`node-sfv v${version}`);
 
 	if (sfvFiles?.length) {
 		await verify(sfvFiles);
