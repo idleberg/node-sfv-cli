@@ -1,5 +1,4 @@
 import { readFile } from 'node:fs/promises';
-import { normalize, relative } from 'node:path';
 import { blue, grey, red } from 'kleur/colors';
 import { Listr } from 'listr2';
 import { Piscina } from 'piscina';
