@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 import which from 'which';
 import { fileExists } from './utils.ts';
 
-const CLI_SCRIPT = resolve(process.cwd(), 'bin/index.mjs');
+const CLI_SCRIPT = resolve(process.cwd(), 'bin/cli.mjs');
 
 describe('CLI Integration Tests', () => {
 	// Abusing the test suite to check for external dependency

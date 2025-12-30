@@ -21,8 +21,8 @@
 		"README.md"
 	],
 	"bin": {
-		"sfv": "bin/index.mjs",
-		"node-sfv": "bin/index.mjs"
+		"sfv": "bin/cli.mjs",
+		"node-sfv": "bin/cli.mjs"
 	},
 	"type": "module",
 	"engines": {
