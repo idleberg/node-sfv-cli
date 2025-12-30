@@ -5,21 +5,19 @@ import { rimraf } from 'rimraf';
 import stripAnsi from 'strip-ansi';
 import { describe, expect, it } from 'vitest';
 import which from 'which';
-import { fileExists } from './utils.ts';
 
 const CLI_SCRIPT = resolve(process.cwd(), 'bin/cli.mjs');
 
 describe('CLI Integration Tests', () => {
 	// Abusing the test suite to check for external dependency
 	it('cksfv is installed', async () => {
-		const ckSfvPath = await which('cksfv');
-		const actual = ckSfvPath && (await fileExists(ckSfvPath));
+		const actual = await which('cksfv');
 
 		if (!actual) {
 			console.log('Make sure cksfv is installed and in your PATH environment variable');
 		}
 
-		expect(actual).toBe(true);
+		expect(actual).toBeDefined();
 	});
 
 	it('CRC32: Read', async () => {
