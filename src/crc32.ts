@@ -35,14 +35,17 @@ export async function calculateChecksums(files: SFVObject[]): Promise<SFVObject[
 				if (typeof checksum === 'undefined' || checksum === result.checksum) {
 					task.title = `${file} ${blue(result.checksum)} ${grey(`${result.duration}ms`)}`;
 				} else {
-					task.title = `${file} ${red(checksum)} (actual ${blue(result.checksum)}) ${grey(`${result.duration}ms`)}`;
+					throw new Error(`${file} ${red(checksum)} (actual ${blue(result.checksum)}) ${grey(`${result.duration}ms`)}`);
 				}
 
 				// TODO handle mismatches in verify mode
 				checksums.push({ file, checksum: result.checksum });
 			},
 		})),
-		{ concurrent: true },
+		{
+			concurrent: true,
+			exitOnError: false,
+		},
 	);
 
 	await tasks.run();
