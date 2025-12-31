@@ -1,23 +1,22 @@
 import { randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
+import { before } from 'node:test';
 import { execa } from 'execa';
 import { rimraf } from 'rimraf';
 import stripAnsi from 'strip-ansi';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import which from 'which';
 
 const CLI_SCRIPT = resolve(process.cwd(), 'bin/cli.mjs');
 
 describe('CLI Integration Tests', () => {
 	// Abusing the test suite to check for external dependency
-	it('cksfv is installed', async () => {
-		const actual = await which('cksfv');
-
-		if (!actual) {
-			console.log('Make sure cksfv is installed and in your PATH environment variable');
+	beforeAll(async () => {
+		try {
+			await which('cksfv');
+		} catch {
+			throw Error('Make sure cksfv is installed and in your PATH environment variable');
 		}
-
-		expect(actual).toBeDefined();
 	});
 
 	it('CRC32: Read', async () => {
