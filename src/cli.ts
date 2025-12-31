@@ -16,8 +16,7 @@ export async function handleCli() {
 			writeErr: (message: string) => logger.error(message),
 		})
 		.argument('<file...>', 'files to hash')
-		.option('-o, --outfile <file>', 'writes SFV file', false)
-		.option('-w, --winsfv', 'enables WinSFV compatibility', false);
+		.option('-o, --outfile <file>', 'writes SFV file', false);
 
 	program.parse();
 
