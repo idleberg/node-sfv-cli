@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { relative } from 'node:path';
 import { blue, grey, red } from 'kleur/colors';
 import { Listr } from 'listr2';
 import { Piscina } from 'piscina';
@@ -19,7 +20,7 @@ export async function calculateChecksums(files: SFVObject[]): Promise<SFVObject[
 		new Set(
 			files.map(({ checksum, file }) => {
 				return {
-					file,
+					file: relative(process.cwd(), file),
 					checksum,
 				};
 			}),
