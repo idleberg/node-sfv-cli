@@ -4,7 +4,8 @@
 [![Version](https://img.shields.io/npm/v/sfv-cli?style=for-the-badge)](https://www.npmjs.org/package/sfv-cli)
 [![Build](https://img.shields.io/github/actions/workflow/status/idleberg/node-sfv-cli/default.yml?style=for-the-badge)](https://github.com/idleberg/node-sfv-cli/actions)
 
-CLI tool to verify and create SFV files (see [Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification)).
+CLI tool to verify and create SFV files (see
+[Simple File Verification](https://www.wikiwand.com/en/Simple_file_verification)).
 
 ![Screenshot](https://raw.github.com/idleberg/node-sfv-cli/master/screenshot.png)
 
@@ -35,15 +36,9 @@ $ sfv vlc.sfv
 Running `sfv --help` lists all available flags
 
 ```
-  -V, --version                output the version number
-  -a, --algorithm [algorithm]  specifies hashing algorithm
-  -F, --fail-fast              stops execution after first error (default: false)
-  -f, --format                 aligns checksums (default: false)
-  -o, --output <file>          specifies output file
-  -p, --print                  prints SFV file to stdout (default: false)
-  -s, --sort                   sorts output (default: false)
-  -w, --winsfv                 enables WinSFV compatibility (default: false)
-  -h, --help                   display help for command
+-V, --version         output the version number
+-o, --outfile <file>  writes SFV file (default: false)
+-h, --help            display help for command
 ```
 
 ## Related
