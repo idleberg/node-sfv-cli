@@ -12,6 +12,7 @@ yarn.lock
 # development
 .eslintcache
 .stylelintcache
+coverage/
 
 # build
 bin/
@@ -24,3 +25,4 @@ bin/
 test.js
 test.ts
 todo.md
+*.mp4
