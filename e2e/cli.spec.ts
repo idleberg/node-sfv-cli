@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
-import { before } from 'node:test';
 import { execa } from 'execa';
 import { rimraf } from 'rimraf';
 import stripAnsi from 'strip-ansi';
