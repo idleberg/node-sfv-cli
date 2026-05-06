@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { handleCli } from './cli.ts';
 
 describe('handleCli', () => {
@@ -6,6 +6,16 @@ describe('handleCli', () => {
 
 	afterEach(() => {
 		process.argv = originalArgv;
+		vi.restoreAllMocks();
+	});
+
+	it('should show help and exit when no arguments provided', async () => {
+		process.argv = ['node', 'cli.js'];
+		const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never);
+
+		await handleCli();
+
+		expect(exitSpy).toHaveBeenCalledWith(0);
 	});
 
 	it('should parse single file argument', async () => {

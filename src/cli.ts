@@ -18,6 +18,11 @@ export async function handleCli() {
 		.argument('<file...>', 'files to hash')
 		.option('-o, --outfile <file>', 'writes SFV file', false);
 
+	if (process.argv.length <= 2) {
+		program.outputHelp();
+		process.exit(0);
+	}
+
 	program.parse();
 
 	const args = program.args;
