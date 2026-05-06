@@ -39,33 +39,33 @@
 		"crc32"
 	],
 	"dependencies": {
-		"commander": "^14.0.2",
+		"commander": "^14.0.3",
 		"kleur": "^4.1.5",
 		"listr2": "^9.0.5",
 		"log-symbols": "^7.0.1",
 		"piscina": "^5.1.4",
 		"simple-file-verification": "^5.0.1",
-		"yocto-spinner": "^1.0.0"
+		"yocto-spinner": "^1.2.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^20.3.0",
-		"@commitlint/config-conventional": "^20.3.0",
+		"@commitlint/cli": "^20.5.3",
+		"@commitlint/config-conventional": "^20.5.3",
 		"@e18e/cli": "^0.3.1",
-		"@idleberg/configs": "^0.4.1",
-		"@types/node": "^24.10.1",
+		"@idleberg/configs": "^0.4.2",
+		"@types/node": "^24.12.2",
 		"@types/which": "^3.0.4",
-		"@vitest/coverage-v8": "^4.0.16",
+		"@vitest/coverage-v8": "^4.1.5",
 		"concurrently": "^9.2.1",
 		"execa": "^9.6.1",
-		"np": "^10.2.0",
-		"rimraf": "^6.1.2",
-		"strip-ansi": "^7.1.2",
-		"tsdown": "^0.18.3",
+		"np": "^10.3.0",
+		"rimraf": "^6.1.3",
+		"strip-ansi": "^7.2.0",
+		"tsdown": "^0.18.4",
 		"tslib": "^2.8.1",
 		"tsm": "^2.3.0",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.16",
-		"which": "^6.0.0"
+		"vitest": "^4.1.5",
+		"which": "^6.0.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
